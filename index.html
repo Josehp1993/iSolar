@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iSolar - Energías Renovables</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <svg class="logo-svg" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="38" class="logo-is">IS</text>
+          <g transform="translate(58, 5)">
+            <circle cx="18" cy="20" r="6" fill="none" stroke="#2E8B3E" stroke-width="2"/>
+            <circle cx="18" cy="20" r="3" fill="#2E8B3E"/>
+            <line x1="18" y1="5" x2="18" y2="0" stroke="#4CAF50" stroke-width="2"/>
+            <line x1="18" y1="35" x2="18" y2="40" stroke="#4CAF50" stroke-width="2"/>
+            <line x1="3" y1="20" x2="0" y2="20" stroke="#4CAF50" stroke-width="2"/>
+            <line x1="33" y1="20" x2="36" y2="20" stroke="#4CAF50" stroke-width="2"/>
+            <line x1="7" y1="9" x2="4" y2="6" stroke="#4CAF50" stroke-width="2"/>
+            <line x1="29" y1="31" x2="32" y2="34" stroke="#4CAF50" stroke-width="2"/>
+            <line x1="7" y1="31" x2="4" y2="34" stroke="#4CAF50" stroke-width="2"/>
+            <line x1="29" y1="9" x2="32" y2="6" stroke="#4CAF50" stroke-width="2"/>
+          </g>
+          <text x="100" y="38" class="logo-lar">LAR</text>
+          <text x="15" y="50" class="logo-sub">ENERGIAS RENOVABLES</text>
+        </svg>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-menu" id="navMenu">
+        <a href="#inicio" class="nav-link">Inicio</a>
+        <div class="nav-dropdown">
+          <a href="#productos" class="nav-link nav-link-dropdown">
+            Productos <svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#paneles" class="dropdown-item">
+              <span class="dropdown-icon">&#9672;</span> Paneles Solares
+            </a>
+            <a href="#inversores" class="dropdown-item">
+              <span class="dropdown-icon">&#9889;</span> Inversores
+            </a>
+            <a href="#baterias-gel" class="dropdown-item">
+              <span class="dropdown-icon">&#9854;</span> Baterias de Gel
+            </a>
+            <a href="#baterias-litio" class="dropdown-item">
+              <span class="dropdown-icon">&#9211;</span> Baterias de Litio
+            </a>
+            <a href="#protecciones" class="dropdown-item">
+              <span class="dropdown-icon">&#9737;</span> Protecciones
+            </a>
+            <a href="#cableado" class="dropdown-item">
+              <span class="dropdown-icon">&#8281;</span> Cableado
+            </a>
+            <a href="#estructura" class="dropdown-item">
+              <span class="dropdown-icon">&#9649;</span> Estructura
+            </a>
+          </div>
+        </div>
+        <a href="#nosotros" class="nav-link">Nosotros</a>
+        <a href="#contacto" class="nav-link">Contacto</a>
+        <a href="#cotizar" class="nav-cta">Cotizar Ahora</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg">
+      <div class="hero-gradient"></div>
+      <div class="hero-particles" id="particles"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Lideres en Energia Solar
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line">Energia limpia</span>
+        <span class="title-line title-highlight">para un futuro</span>
+        <span class="title-line">sostenible</span>
+      </h1>
+      <p class="hero-description">
+        Equipos de energia solar de alta calidad para hogares, empresas e industrias.
+        Paneles, inversores, baterias y todo lo que necesitas para tu proyecto solar.
+      </p>
+      <div class="hero-actions">
+        <a href="#productos" class="btn btn-primary">
+          Ver Productos
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </a>
+        <a href="#cotizar" class="btn btn-secondary">Solicitar Cotizacion</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number" data-target="500">0</span>
+          <span class="stat-unit">+</span>
+          <span class="stat-label">Proyectos Instalados</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number" data-target="50">0</span>
+          <span class="stat-unit">MW</span>
+          <span class="stat-label">Capacidad Instalada</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number" data-target="98">0</span>
+          <span class="stat-unit">%</span>
+          <span class="stat-label">Clientes Satisfechos</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="solar-panel-3d">
+        <div class="panel-glow"></div>
+        <div class="sun-rays">
+          <div class="ray"></div><div class="ray"></div><div class="ray"></div>
+          <div class="ray"></div><div class="ray"></div><div class="ray"></div>
+        </div>
+        <svg class="panel-svg" viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="panelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1a365d;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#2d5a8e;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="cellGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1e3a5f" />
+              <stop offset="50%" style="stop-color:#2a4f7a" />
+              <stop offset="100%" style="stop-color:#1e3a5f" />
+            </linearGradient>
+          </defs>
+          <rect x="20" y="20" width="260" height="210" rx="8" fill="url(#panelGrad)" stroke="#4a7ab5" stroke-width="2"/>
+          <g fill="url(#cellGrad)" stroke="#3a6a9e" stroke-width="0.5">
+            <rect x="30" y="30" width="55" height="45" rx="2"/>
+            <rect x="90" y="30" width="55" height="45" rx="2"/>
+            <rect x="150" y="30" width="55" height="45" rx="2"/>
+            <rect x="210" y="30" width="55" height="45" rx="2"/>
+            <rect x="30" y="80" width="55" height="45" rx="2"/>
+            <rect x="90" y="80" width="55" height="45" rx="2"/>
+            <rect x="150" y="80" width="55" height="45" rx="2"/>
+            <rect x="210" y="80" width="55" height="45" rx="2"/>
+            <rect x="30" y="130" width="55" height="45" rx="2"/>
+            <rect x="90" y="130" width="55" height="45" rx="2"/>
+            <rect x="150" y="130" width="55" height="45" rx="2"/>
+            <rect x="210" y="130" width="55" height="45" rx="2"/>
+            <rect x="30" y="180" width="55" height="40" rx="2"/>
+            <rect x="90" y="180" width="55" height="40" rx="2"/>
+            <rect x="150" y="180" width="55" height="40" rx="2"/>
+            <rect x="210" y="180" width="55" height="40" rx="2"/>
+          </g>
+          <line x1="87" y1="30" x2="87" y2="220" stroke="#5588bb" stroke-width="1" opacity="0.6"/>
+          <line x1="148" y1="30" x2="148" y2="220" stroke="#5588bb" stroke-width="1" opacity="0.6"/>
+          <line x1="208" y1="30" x2="208" y2="220" stroke="#5588bb" stroke-width="1" opacity="0.6"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="productos">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Catalogo</span>
+        <h2 class="section-title">Nuestros Productos</h2>
+        <p class="section-subtitle">Equipos de primera linea para sistemas de energia solar residenciales, comerciales e industriales</p>
+      </div>
+
+      <div class="products-grid">
+
+        <a href="#paneles" class="product-card" id="paneles">
+          <div class="card-icon" style="--accent: #1a73e8">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="6" y="10" width="36" height="28" rx="3"/>
+              <line x1="18" y1="10" x2="18" y2="38"/>
+              <line x1="30" y1="10" x2="30" y2="38"/>
+              <line x1="6" y1="20" x2="42" y2="20"/>
+              <line x1="6" y1="30" x2="42" y2="30"/>
+              <line x1="24" y1="38" x2="24" y2="44"/>
+              <line x1="18" y1="44" x2="30" y2="44"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Paneles Solares</h3>
+          <p class="card-desc">Paneles monocristalinos y policristalinos de alta eficiencia. Desde 100W hasta 600W para todo tipo de instalacion.</p>
+          <div class="card-specs">
+            <span class="spec">Mono & Poli</span>
+            <span class="spec">100W - 600W</span>
+            <span class="spec">25 anos garantia</span>
+          </div>
+          <span class="card-link">Ver catalogo <svg width="16" height="16" viewBox="0 0 16 16"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+        </a>
+
+        <a href="#inversores" class="product-card" id="inversores">
+          <div class="card-icon" style="--accent: #f59e0b">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="8" y="8" width="32" height="32" rx="4"/>
+              <path d="M20 20l4-6 4 6"/>
+              <path d="M20 28l4 6 4-6"/>
+              <line x1="24" y1="14" x2="24" y2="20"/>
+              <line x1="24" y1="28" x2="24" y2="34"/>
+              <circle cx="16" cy="24" r="2"/>
+              <circle cx="32" cy="24" r="2"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Inversores</h3>
+          <p class="card-desc">Inversores on-grid, off-grid e hibridos. Tecnologia MPPT para maxima conversion de energia.</p>
+          <div class="card-specs">
+            <span class="spec">On/Off Grid</span>
+            <span class="spec">1kW - 100kW</span>
+            <span class="spec">MPPT</span>
+          </div>
+          <span class="card-link">Ver catalogo <svg width="16" height="16" viewBox="0 0 16 16"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+        </a>
+
+        <a href="#baterias-gel" class="product-card" id="baterias-gel">
+          <div class="card-icon" style="--accent: #10b981">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="10" y="14" width="28" height="24" rx="3"/>
+              <rect x="18" y="10" width="4" height="4" rx="1"/>
+              <rect x="26" y="10" width="4" height="4" rx="1"/>
+              <line x1="16" y1="22" x2="16" y2="30"/>
+              <line x1="12" y1="26" x2="20" y2="26"/>
+              <line x1="28" y1="26" x2="36" y2="26"/>
+              <path d="M14 34c4-4 8 4 12 0s8 4 12 0" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Baterias de Gel</h3>
+          <p class="card-desc">Baterias selladas de ciclo profundo con tecnologia de gel. Libres de mantenimiento y larga vida util.</p>
+          <div class="card-specs">
+            <span class="spec">Ciclo profundo</span>
+            <span class="spec">12V - 48V</span>
+            <span class="spec">Sin mantenim.</span>
+          </div>
+          <span class="card-link">Ver catalogo <svg width="16" height="16" viewBox="0 0 16 16"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+        </a>
+
+        <a href="#baterias-litio" class="product-card" id="baterias-litio">
+          <div class="card-icon" style="--accent: #8b5cf6">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="12" y="8" width="24" height="34" rx="4"/>
+              <rect x="20" y="5" width="8" height="3" rx="1"/>
+              <rect x="16" y="14" width="16" height="6" rx="1" fill="currentColor" opacity="0.3"/>
+              <rect x="16" y="22" width="16" height="6" rx="1" fill="currentColor" opacity="0.2"/>
+              <rect x="16" y="30" width="16" height="6" rx="1" fill="currentColor" opacity="0.1"/>
+              <path d="M22 17l4-2v4l-4-2z" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Baterias de Litio</h3>
+          <p class="card-desc">Baterias LiFePO4 de ultima generacion. Mayor densidad energetica, mas ciclos de carga y peso reducido.</p>
+          <div class="card-specs">
+            <span class="spec">LiFePO4</span>
+            <span class="spec">+6000 ciclos</span>
+            <span class="spec">BMS integrado</span>
+          </div>
+          <span class="card-link">Ver catalogo <svg width="16" height="16" viewBox="0 0 16 16"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+        </a>
+
+        <a href="#protecciones" class="product-card" id="protecciones">
+          <div class="card-icon" style="--accent: #ef4444">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M24 6L8 14v12c0 10 7 17 16 20 9-3 16-10 16-20V14L24 6z"/>
+              <path d="M18 24l4 4 8-8"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Protecciones</h3>
+          <p class="card-desc">Sistemas de proteccion electrica: breakers DC/AC, fusibles, supresores de picos y puesta a tierra.</p>
+          <div class="card-specs">
+            <span class="spec">DC & AC</span>
+            <span class="spec">Breakers</span>
+            <span class="spec">SPD</span>
+          </div>
+          <span class="card-link">Ver catalogo <svg width="16" height="16" viewBox="0 0 16 16"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+        </a>
+
+        <a href="#cableado" class="product-card" id="cableado">
+          <div class="card-icon" style="--accent: #06b6d4">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 24c6-8 12 8 16 0s10 8 16 0"/>
+              <circle cx="8" cy="24" r="3"/>
+              <circle cx="40" cy="24" r="3"/>
+              <path d="M14 16c4-4 8 4 12 0" opacity="0.5"/>
+              <path d="M14 32c4-4 8 4 12 0" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Cableado</h3>
+          <p class="card-desc">Cable solar fotovoltaico, conectores MC4, bandejas portacables y accesorios de conexion profesional.</p>
+          <div class="card-specs">
+            <span class="spec">Cable PV</span>
+            <span class="spec">MC4</span>
+            <span class="spec">UV resistente</span>
+          </div>
+          <span class="card-link">Ver catalogo <svg width="16" height="16" viewBox="0 0 16 16"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+        </a>
+
+        <a href="#estructura" class="product-card" id="estructura">
+          <div class="card-icon" style="--accent: #64748b">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="40" x2="40" y2="40"/>
+              <line x1="12" y1="40" x2="20" y2="16"/>
+              <line x1="36" y1="40" x2="28" y2="16"/>
+              <line x1="20" y1="16" x2="28" y2="16"/>
+              <line x1="16" y1="28" x2="32" y2="28"/>
+              <rect x="16" y="10" width="16" height="8" rx="1" transform="rotate(-5 24 14)"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Estructura</h3>
+          <p class="card-desc">Estructuras de montaje en aluminio para techo, suelo y poste. Resistentes a la corrosion y vientos fuertes.</p>
+          <div class="card-specs">
+            <span class="spec">Aluminio</span>
+            <span class="spec">Techo/Suelo</span>
+            <span class="spec">Anti-corrosion</span>
+          </div>
+          <span class="card-link">Ver catalogo <svg width="16" height="16" viewBox="0 0 16 16"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY ISOLAR -->
+  <section class="why-section" id="nosotros">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Por que elegirnos</span>
+        <h2 class="section-title">La solucion solar completa</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-number">01</div>
+          <h3>Equipos Certificados</h3>
+          <p>Trabajamos con las mejores marcas del mercado internacional, con certificaciones IEC, TUV y UL.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-number">02</div>
+          <h3>Asesoria Tecnica</h3>
+          <p>Nuestro equipo de ingenieros te asesora en el dimensionamiento y seleccion de equipos para tu proyecto.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-number">03</div>
+          <h3>Garantia Extendida</h3>
+          <p>Respaldamos todos nuestros productos con garantia de fabrica y soporte tecnico local.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-number">04</div>
+          <h3>Envio Nacional</h3>
+          <p>Despacho a todo el pais con embalaje especial para equipos solares. Entrega segura garantizada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / QUOTE -->
+  <section class="cta-section" id="cotizar">
+    <div class="container">
+      <div class="cta-content">
+        <div class="cta-text">
+          <h2>Comienza tu proyecto solar hoy</h2>
+          <p>Solicita una cotizacion personalizada. Nuestro equipo te contactara en menos de 24 horas con la mejor propuesta para tu necesidad energetica.</p>
+          <ul class="cta-list">
+            <li>
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="none" stroke="#4CAF50" stroke-width="2"/><path d="M6 10l3 3 5-5" fill="none" stroke="#4CAF50" stroke-width="2"/></svg>
+              Cotizacion sin compromiso
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="none" stroke="#4CAF50" stroke-width="2"/><path d="M6 10l3 3 5-5" fill="none" stroke="#4CAF50" stroke-width="2"/></svg>
+              Respuesta en 24 horas
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="none" stroke="#4CAF50" stroke-width="2"/><path d="M6 10l3 3 5-5" fill="none" stroke="#4CAF50" stroke-width="2"/></svg>
+              Asesoria tecnica incluida
+            </li>
+          </ul>
+        </div>
+        <form class="cta-form" id="contactForm">
+          <div class="form-group">
+            <input type="text" placeholder="Nombre completo" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <input type="email" placeholder="Correo electronico" required>
+            </div>
+            <div class="form-group">
+              <input type="tel" placeholder="Telefono">
+            </div>
+          </div>
+          <div class="form-group">
+            <select required>
+              <option value="" disabled selected>Que producto te interesa?</option>
+              <option>Paneles Solares</option>
+              <option>Inversores</option>
+              <option>Baterias de Gel</option>
+              <option>Baterias de Litio</option>
+              <option>Protecciones</option>
+              <option>Cableado</option>
+              <option>Estructura</option>
+              <option>Sistema Completo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Cuentanos sobre tu proyecto..." rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            Enviar Solicitud
+            <svg width="20" height="20" viewBox="0 0 20 20"><path d="M4 10h12M12 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contacto">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>iSolar</h3>
+          <p class="footer-tagline">Energias Renovables</p>
+          <p>Tu socio en energia solar. Equipos de calidad para un futuro sostenible.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Productos</h4>
+          <a href="#paneles">Paneles Solares</a>
+          <a href="#inversores">Inversores</a>
+          <a href="#baterias-gel">Baterias de Gel</a>
+          <a href="#baterias-litio">Baterias de Litio</a>
+          <a href="#protecciones">Protecciones</a>
+          <a href="#cableado">Cableado</a>
+          <a href="#estructura">Estructura</a>
+        </div>
+        <div class="footer-links">
+          <h4>Empresa</h4>
+          <a href="#nosotros">Nosotros</a>
+          <a href="#cotizar">Cotizar</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <div class="footer-contact">
+          <h4>Contacto</h4>
+          <p>info@isolar.com</p>
+          <p>+58 424 000 0000</p>
+          <div class="social-links">
+            <a href="#" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="#" aria-label="WhatsApp">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.243-1.214l-.257-.154-2.833.842.842-2.833-.154-.257A8 8 0 1112 20z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 iSolar Energias Renovables. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
