@@ -9,10 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy: #1a365d;
-  --navy-dark: #0f2440;
-  --blue: #2d5a8e;
+  --navy: #1b3d6f;
+  --navy-dark: #122b4f;
+  --blue: #3a7cc0;
   --green: #2E8B3E;
+  --green-light: #4CAF50;
   --green-soft: #d4edda;
   --white: #fff;
   --bg: #fafafa;
@@ -41,11 +42,8 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; bord
   display: flex; align-items: center; justify-content: space-between;
   height: 64px;
 }
-.nav-brand {
-  font-weight: 700; font-size: 20px; color: var(--navy);
-  letter-spacing: -.3px;
-}
-.nav-brand span { color: var(--green); }
+.nav-brand { display: flex; align-items: center; }
+.nav-brand img { height: 40px; width: auto; }
 .nav-links {
   display: flex; align-items: center; gap: 4px; list-style: none;
 }
@@ -55,10 +53,10 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; bord
 }
 .nav-links a:hover { color: var(--navy); background: #f0f2f5; }
 .nav-links .cta-link {
-  background: var(--navy); color: var(--white); margin-left: 8px;
+  background: var(--green); color: var(--white); margin-left: 8px;
   padding: 8px 18px; font-weight: 600;
 }
-.nav-links .cta-link:hover { background: var(--navy-dark); color: var(--white); }
+.nav-links .cta-link:hover { background: #257a34; color: var(--white); }
 .nav-toggle {
   display: none; background: none; cursor: pointer; padding: 6px;
   flex-direction: column; gap: 5px;
@@ -75,28 +73,52 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; bord
   position: relative;
   overflow: hidden;
 }
-.hero::after {
-  content: '';
-  position: absolute; top: 0; right: 0;
-  width: 50%; height: 100%;
-  background: linear-gradient(135deg, transparent, rgba(46,139,62,.08));
-  pointer-events: none;
-}
 .hero-inner {
   max-width: 1140px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center;
   position: relative; z-index: 1;
 }
-.hero h1 {
-  font-size: clamp(32px, 5vw, 52px);
+.hero-text h1 {
+  font-size: clamp(30px, 4.5vw, 48px);
   font-weight: 700; color: var(--white);
-  line-height: 1.15; max-width: 620px;
-  margin-bottom: 20px; letter-spacing: -.5px;
+  line-height: 1.15; margin-bottom: 20px; letter-spacing: -.5px;
 }
-.hero p {
+.hero-text p {
   color: rgba(255,255,255,.65); font-size: 17px;
   max-width: 500px; margin-bottom: 32px; line-height: 1.7;
 }
 .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-visual {
+  display: flex; justify-content: center; align-items: center;
+}
+.hero-sun-wrap {
+  width: 280px; height: 280px;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-sun-rays {
+  position: absolute; inset: 0;
+  animation: sunRotate 30s linear infinite;
+}
+@keyframes sunRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.hero-sun-spiral {
+  width: 120px; height: 120px;
+  position: relative; z-index: 2;
+}
+.hero-sun-glow {
+  position: absolute; inset: -40px;
+  background: radial-gradient(circle, rgba(46,139,62,.15), transparent 70%);
+  border-radius: 50%;
+  animation: sunGlow 4s ease-in-out infinite;
+}
+@keyframes sunGlow {
+  0%, 100% { opacity: .6; }
+  50% { opacity: 1; }
+}
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 12px 24px; border-radius: var(--radius);
@@ -426,7 +448,9 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; bord
   .nav-links.open { display: flex; }
   .nav-links .cta-link { margin-left: 0; text-align: center; }
   .hero { padding: 100px 24px 60px; }
-  .hero h1 { font-size: 28px; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .hero-text h1 { font-size: 28px; }
   .products-list { grid-template-columns: 1fr; }
   .contact-inner { grid-template-columns: 1fr; }
   .features-list { grid-template-columns: 1fr; }
@@ -440,7 +464,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; bord
 
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="#" class="nav-brand" onclick="goTop(event)">i<span>S</span>olar</a>
+    <a href="#" class="nav-brand" onclick="goTop(event)"><img src="logo-isolar.jpg" alt="iSolar Energias Renovables"></a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#catalogo" onclick="cl()">Catalogo</a></li>
       <li><a href="#nosotros" onclick="cl()">Nosotros</a></li>
@@ -455,11 +479,34 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; bord
 
 <section class="hero">
   <div class="hero-inner">
-    <h1>Equipos de energia solar para cada proyecto</h1>
-    <p>Paneles, inversores, baterias, controladores y accesorios con certificacion RETIE. Asesoria tecnica y envio a todo Colombia.</p>
-    <div class="hero-btns">
-      <a href="#catalogo" class="btn btn-green">Ver catalogo</a>
-      <a href="https://wa.me/573001234567?text=Hola%2C%20necesito%20asesoria%20para%20un%20sistema%20solar" target="_blank" class="btn btn-outline-w">Solicitar asesoria</a>
+    <div class="hero-text">
+      <h1>Equipos de energia solar para cada proyecto</h1>
+      <p>Paneles, inversores, baterias, controladores y accesorios con certificacion RETIE. Asesoria tecnica y envio a todo Colombia.</p>
+      <div class="hero-btns">
+        <a href="#catalogo" class="btn btn-green">Ver catalogo</a>
+        <a href="https://wa.me/573001234567?text=Hola%2C%20necesito%20asesoria%20para%20un%20sistema%20solar" target="_blank" class="btn btn-outline-w">Solicitar asesoria</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-sun-wrap">
+        <div class="hero-sun-glow"></div>
+        <svg class="hero-sun-rays" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="140" y1="10" x2="140" y2="50" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="140" y1="230" x2="140" y2="270" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="10" y1="140" x2="50" y2="140" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="230" y1="140" x2="270" y2="140" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="48" y1="48" x2="76" y2="76" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="204" y1="204" x2="232" y2="232" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="48" y1="232" x2="76" y2="204" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="204" y1="76" x2="232" y2="48" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <svg class="hero-sun-spiral" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="45" stroke="#2E8B3E" stroke-width="3" fill="none"/>
+          <circle cx="60" cy="60" r="30" stroke="#2E8B3E" stroke-width="2.5" fill="none"/>
+          <circle cx="60" cy="60" r="17" stroke="#2E8B3E" stroke-width="2" fill="none"/>
+          <circle cx="60" cy="60" r="7" fill="#2E8B3E"/>
+        </svg>
+      </div>
     </div>
   </div>
 </section>
