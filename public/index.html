@@ -3,517 +3,714 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iSolar - Energias Renovables | Equipos de Energia Solar</title>
-<meta name="description" content="iSolar Energias Renovables - Venta de paneles solares, inversores, baterias, protecciones, estructura y accesorios para sistemas fotovoltaicos.">
+<title>iSolar | Energias Renovables</title>
+<meta name="description" content="Venta de equipos de energia solar en Colombia. Paneles, inversores, baterias, protecciones y accesorios para sistemas fotovoltaicos.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
---navy:#1a365d;--navy-light:#234e8e;--navy-dark:#0f2440;
---green:#2E8B3E;--green-light:#4CAF50;--green-dark:#1d6b2a;
---gold:#f59e0b;--orange:#f97316;
---bg:#f8fafc;--bg-card:#fff;--text:#1e293b;--text-light:#64748b;--text-lighter:#94a3b8;
---radius:12px;--shadow:0 1px 3px rgba(0,0,0,.1);--shadow-lg:0 10px 30px rgba(0,0,0,.12);
+:root {
+  --navy: #1a365d;
+  --navy-dark: #0f2440;
+  --blue: #2d5a8e;
+  --green: #2E8B3E;
+  --green-soft: #d4edda;
+  --white: #fff;
+  --bg: #fafafa;
+  --text: #2c3e50;
+  --text-mid: #5a6a7a;
+  --text-light: #8a96a3;
+  --border: #e4e8ec;
+  --radius: 8px;
 }
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.6;overflow-x:hidden}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+button, input, select, textarea { font-family: inherit; font-size: inherit; border: none; outline: none; }
 
 /* NAV */
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 0;transition:all .3s}
-.nav.scrolled{background:rgba(26,54,93,.97);backdrop-filter:blur(10px);padding:.6rem 0;box-shadow:0 2px 20px rgba(0,0,0,.2)}
-.nav-inner{max-width:1280px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:#fff;font-weight:800;font-size:1.4rem;letter-spacing:-.5px}
-.nav-logo .sun{color:var(--gold);font-size:1.6rem}
-.nav-links{display:flex;gap:.3rem;list-style:none}
-.nav-links a{color:rgba(255,255,255,.85);text-decoration:none;padding:.5rem 1rem;border-radius:8px;font-size:.9rem;font-weight:500;transition:all .2s}
-.nav-links a:hover,.nav-links a.active{color:#fff;background:rgba(255,255,255,.12)}
-.nav-cta{background:var(--green)!important;color:#fff!important;padding:.5rem 1.2rem!important;border-radius:8px!important;font-weight:600!important}
-.nav-cta:hover{background:var(--green-light)!important;transform:translateY(-1px)}
-.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px}
-.nav-toggle span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:all .3s}
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow .2s;
+}
+.nav.shadow { box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.nav-inner {
+  max-width: 1140px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-brand {
+  font-weight: 700; font-size: 20px; color: var(--navy);
+  letter-spacing: -.3px;
+}
+.nav-brand span { color: var(--green); }
+.nav-links {
+  display: flex; align-items: center; gap: 4px; list-style: none;
+}
+.nav-links a {
+  padding: 8px 14px; border-radius: 6px; font-size: 14px;
+  font-weight: 500; color: var(--text-mid); transition: all .15s;
+}
+.nav-links a:hover { color: var(--navy); background: #f0f2f5; }
+.nav-links .cta-link {
+  background: var(--navy); color: var(--white); margin-left: 8px;
+  padding: 8px 18px; font-weight: 600;
+}
+.nav-links .cta-link:hover { background: var(--navy-dark); color: var(--white); }
+.nav-toggle {
+  display: none; background: none; cursor: pointer; padding: 6px;
+  flex-direction: column; gap: 5px;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); border-radius: 2px;
+}
 
 /* HERO */
-.hero{min-height:100vh;background:linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 40%,var(--navy-light) 100%);display:flex;align-items:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5L35 15L45 15L37 22L40 32L30 26L20 32L23 22L15 15L25 15Z' fill='rgba(245,158,11,0.04)'/%3E%3C/svg%3E");pointer-events:none}
-.hero-inner{max-width:1280px;margin:0 auto;padding:8rem 1.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(46,139,62,.2);border:1px solid rgba(46,139,62,.4);color:var(--green-light);padding:.4rem 1rem;border-radius:20px;font-size:.85rem;font-weight:600;margin-bottom:1.5rem}
-.hero h1{font-size:3.5rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:1.5rem}
-.hero h1 .accent{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{color:rgba(255,255,255,.7);font-size:1.15rem;line-height:1.8;margin-bottom:2rem;max-width:520px}
-.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2rem;border-radius:10px;font-weight:700;font-size:.95rem;text-decoration:none;transition:all .3s;cursor:pointer;border:none}
-.btn-primary{background:linear-gradient(135deg,var(--green),var(--green-light));color:#fff;box-shadow:0 4px 15px rgba(46,139,62,.35)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(46,139,62,.45)}
-.btn-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.3)}
-.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.08)}
-.hero-visual{display:flex;justify-content:center;align-items:center}
-.hero-sun{width:320px;height:320px;background:radial-gradient(circle,rgba(245,158,11,.3),transparent 70%);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:pulse 4s ease-in-out infinite}
-.hero-sun-inner{width:180px;height:180px;background:radial-gradient(circle,var(--gold),var(--orange));border-radius:50%;box-shadow:0 0 80px rgba(245,158,11,.5),0 0 160px rgba(245,158,11,.2)}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.hero {
+  background: var(--navy);
+  padding: 120px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 50%; height: 100%;
+  background: linear-gradient(135deg, transparent, rgba(46,139,62,.08));
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1140px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 700; color: var(--white);
+  line-height: 1.15; max-width: 620px;
+  margin-bottom: 20px; letter-spacing: -.5px;
+}
+.hero p {
+  color: rgba(255,255,255,.65); font-size: 17px;
+  max-width: 500px; margin-bottom: 32px; line-height: 1.7;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 12px 24px; border-radius: var(--radius);
+  font-weight: 600; font-size: 14px; cursor: pointer;
+  transition: all .15s; border: none;
+}
+.btn-green { background: var(--green); color: var(--white); }
+.btn-green:hover { background: #257a34; }
+.btn-outline-w {
+  background: transparent; color: var(--white);
+  border: 1.5px solid rgba(255,255,255,.25);
+}
+.btn-outline-w:hover { border-color: rgba(255,255,255,.5); }
 
-/* STATS */
-.stats{background:var(--navy-dark);padding:3rem 0}
-.stats-grid{max-width:1280px;margin:0 auto;padding:0 1.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
-.stat{text-align:center;color:#fff}
-.stat-num{font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.stat-label{color:rgba(255,255,255,.6);font-size:.85rem;margin-top:.3rem}
+/* CATALOG */
+.catalog { padding: 64px 24px; }
+.catalog-inner { max-width: 1140px; margin: 0 auto; }
+.catalog-header {
+  margin-bottom: 40px;
+}
+.catalog-header h2 {
+  font-size: 28px; font-weight: 700; color: var(--navy);
+  margin-bottom: 6px;
+}
+.catalog-header p { color: var(--text-mid); font-size: 15px; }
 
-/* CATEGORIES */
-.section{padding:5rem 0}
-.section-inner{max-width:1280px;margin:0 auto;padding:0 1.5rem}
-.section-header{text-align:center;margin-bottom:3rem}
-.section-header h2{font-size:2.2rem;font-weight:800;color:var(--navy);margin-bottom:.8rem}
-.section-header p{color:var(--text-light);font-size:1.05rem;max-width:600px;margin:0 auto}
+.cat-tabs {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+}
+.cat-tab {
+  padding: 8px 18px; border-radius: 6px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  background: transparent; color: var(--text-mid);
+  border: 1px solid transparent; transition: all .15s;
+}
+.cat-tab:hover { color: var(--navy); background: #f0f2f5; }
+.cat-tab.active {
+  background: var(--navy); color: var(--white);
+  border-color: var(--navy);
+}
+.cat-tab .count {
+  display: inline-block; margin-left: 4px;
+  font-size: 11px; font-weight: 500; opacity: .7;
+}
 
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem}
-.cat-card{background:var(--bg-card);border-radius:var(--radius);padding:2rem;text-align:center;cursor:pointer;transition:all .3s;border:2px solid transparent;box-shadow:var(--shadow)}
-.cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--green)}
-.cat-card .icon{width:64px;height:64px;margin:0 auto 1rem;background:linear-gradient(135deg,rgba(26,54,93,.08),rgba(46,139,62,.08));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem}
-.cat-card h3{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.4rem}
-.cat-card span{color:var(--text-light);font-size:.85rem}
-
-/* PRODUCTS */
-.products-section{background:linear-gradient(180deg,var(--bg) 0%,#eef2ff 100%)}
-.filter-bar{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.5rem}
-.filter-btn{padding:.55rem 1.4rem;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;color:var(--text);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
-.filter-btn:hover{border-color:var(--navy);color:var(--navy)}
-.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
-.product-card{background:var(--bg-card);border-radius:var(--radius);overflow:hidden;transition:all .3s;cursor:pointer;border:1px solid #e2e8f0;position:relative}
-.product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--green)}
-.product-card-top{padding:1.5rem 1.5rem 0;display:flex;justify-content:space-between;align-items:flex-start}
-.product-badge{display:inline-block;padding:.25rem .7rem;border-radius:6px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.product-badge.brand{background:rgba(26,54,93,.08);color:var(--navy)}
-.product-card-body{padding:1rem 1.5rem 1.5rem}
-.product-card h3{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:.6rem;line-height:1.4}
-.product-card .specs-preview{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
-.spec-tag{padding:.2rem .6rem;background:rgba(46,139,62,.06);color:var(--green-dark);border-radius:5px;font-size:.75rem;font-weight:500}
-.product-card .cta-row{display:flex;gap:.6rem}
-.product-card .btn-sm{padding:.5rem 1rem;font-size:.8rem;border-radius:8px;font-weight:600;flex:1;text-align:center;display:flex;align-items:center;justify-content:center;gap:.3rem}
-.btn-green{background:var(--green);color:#fff;border:none;cursor:pointer;transition:all .2s}
-.btn-green:hover{background:var(--green-light)}
-.btn-ghost{background:transparent;color:var(--navy);border:1.5px solid #e2e8f0;cursor:pointer;transition:all .2s}
-.btn-ghost:hover{border-color:var(--navy);background:rgba(26,54,93,.04)}
-
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
-.modal-overlay.show{display:flex}
-.modal{background:#fff;border-radius:16px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:modalIn .3s ease}
-@keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.06);cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;z-index:1;transition:all .2s}
-.modal-close:hover{background:rgba(0,0,0,.12)}
-.modal-header{padding:2rem 2rem 1rem;border-bottom:1px solid #f1f5f9}
-.modal-header .brand-tag{display:inline-block;padding:.3rem .8rem;background:rgba(26,54,93,.08);color:var(--navy);border-radius:6px;font-size:.75rem;font-weight:700;margin-bottom:.8rem}
-.modal-header h2{font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:.3rem}
-.modal-header .cat-tag{color:var(--text-light);font-size:.9rem}
-.modal-body{padding:2rem}
-.modal-section{margin-bottom:1.5rem}
-.modal-section h3{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:.8rem}
-.specs-table{width:100%;border-collapse:collapse}
-.specs-table tr:nth-child(even){background:#f8fafc}
-.specs-table td{padding:.6rem .8rem;font-size:.9rem}
-.specs-table td:first-child{font-weight:600;color:var(--navy);width:45%}
-.specs-table td:last-child{color:var(--text)}
-.feature-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
-.feature-list li{display:flex;align-items:flex-start;gap:.5rem;font-size:.9rem;color:var(--text)}
-.feature-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
-.modal-actions{display:flex;gap:.8rem;padding:1.5rem 2rem;border-top:1px solid #f1f5f9;background:#fafbfc;border-radius:0 0 16px 16px}
-.modal-actions .btn{flex:1;justify-content:center}
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.p-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+.p-card:hover {
+  border-color: var(--green);
+  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+}
+.p-card-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 10px;
+}
+.p-card-brand {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .5px; color: var(--blue); background: #eef3fa;
+  padding: 3px 8px; border-radius: 4px;
+}
+.p-card-sub {
+  font-size: 11px; color: var(--text-light); font-weight: 500;
+}
+.p-card h3 {
+  font-size: 15px; font-weight: 600; color: var(--navy);
+  margin-bottom: 10px; line-height: 1.4;
+}
+.p-card-specs {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 14px;
+}
+.p-spec {
+  font-size: 12px; padding: 3px 8px;
+  background: #f4f6f8; border-radius: 4px;
+  color: var(--text-mid); font-weight: 500;
+}
+.p-card-actions {
+  display: flex; gap: 8px;
+}
+.btn-sm {
+  padding: 7px 14px; font-size: 13px; font-weight: 600;
+  border-radius: 6px; cursor: pointer; transition: all .15s;
+  flex: 1; text-align: center; border: none;
+}
+.btn-sm-green { background: var(--green); color: var(--white); }
+.btn-sm-green:hover { background: #257a34; }
+.btn-sm-ghost {
+  background: transparent; color: var(--navy);
+  border: 1px solid var(--border);
+}
+.btn-sm-ghost:hover { border-color: var(--navy); }
 
 /* WHY */
-.why-section{background:var(--navy);color:#fff;padding:5rem 0}
-.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.5rem}
-.why-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:2rem;transition:all .3s}
-.why-card:hover{background:rgba(255,255,255,.1);transform:translateY(-3px)}
-.why-card .icon{font-size:2rem;margin-bottom:1rem}
-.why-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
-.why-card p{color:rgba(255,255,255,.65);font-size:.9rem;line-height:1.6}
+.why {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 64px 24px;
+}
+.why-inner { max-width: 1140px; margin: 0 auto; }
+.why h2 {
+  font-size: 24px; font-weight: 700; color: var(--navy);
+  margin-bottom: 32px;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+.why-item h3 {
+  font-size: 15px; font-weight: 600; color: var(--navy);
+  margin-bottom: 6px;
+}
+.why-item p {
+  font-size: 14px; color: var(--text-mid); line-height: 1.6;
+}
+.why-item-bar {
+  width: 32px; height: 3px; background: var(--green);
+  border-radius: 2px; margin-bottom: 14px;
+}
 
 /* BRANDS */
-.brands-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;align-items:center;padding:3rem 0;opacity:.6}
-.brands-bar span{font-size:1.1rem;font-weight:700;color:var(--text-light);letter-spacing:.5px}
+.brands {
+  padding: 48px 24px;
+  text-align: center;
+}
+.brands-inner { max-width: 1140px; margin: 0 auto; }
+.brands h3 {
+  font-size: 13px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--text-light);
+  margin-bottom: 20px;
+}
+.brands-list {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 24px 36px;
+}
+.brands-list span {
+  font-size: 15px; font-weight: 600; color: var(--text-mid);
+  letter-spacing: .3px;
+}
 
 /* CONTACT */
-.contact-section{background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%)}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
-.contact-info h2{font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:1rem}
-.contact-info p{color:var(--text-light);margin-bottom:2rem;line-height:1.8}
-.contact-detail{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;color:var(--text)}
-.contact-detail .ic{width:40px;height:40px;background:rgba(26,54,93,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-.contact-form{background:#fff;border-radius:16px;padding:2rem;box-shadow:var(--shadow-lg)}
-.form-group{margin-bottom:1.2rem}
-.form-group label{display:block;font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:.4rem}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:.7rem 1rem;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.9rem;font-family:inherit;transition:border-color .2s;background:#fff}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--green)}
-.form-group textarea{min-height:100px;resize:vertical}
+.contact { padding: 64px 24px; background: var(--white); }
+.contact-inner {
+  max-width: 1140px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+}
+.contact-left h2 {
+  font-size: 28px; font-weight: 700; color: var(--navy);
+  margin-bottom: 12px;
+}
+.contact-left p {
+  color: var(--text-mid); font-size: 15px;
+  line-height: 1.7; margin-bottom: 28px;
+}
+.contact-item {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px; font-size: 14px; color: var(--text);
+}
+.contact-item-icon {
+  width: 36px; height: 36px; background: #eef3fa;
+  border-radius: 8px; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
+}
+.contact-item-icon svg {
+  width: 16px; height: 16px; stroke: var(--navy); fill: none;
+  stroke-width: 2;
+}
+.contact-form {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.fg { margin-bottom: 16px; }
+.fg label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--navy); margin-bottom: 5px;
+}
+.fg input, .fg select, .fg textarea {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-size: 14px; background: var(--white);
+  transition: border-color .15s;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus {
+  border-color: var(--green);
+}
+.fg textarea { min-height: 90px; resize: vertical; }
 
 /* FOOTER */
-footer{background:var(--navy-dark);color:rgba(255,255,255,.6);padding:3rem 0 1.5rem}
-.footer-inner{max-width:1280px;margin:0 auto;padding:0 1.5rem}
-.footer-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap;gap:1rem}
-.footer-logo{color:#fff;font-weight:800;font-size:1.2rem}
-.footer-links{display:flex;gap:1.5rem;list-style:none}
-.footer-links a{color:rgba(255,255,255,.5);text-decoration:none;font-size:.85rem;transition:color .2s}
-.footer-links a:hover{color:#fff}
-.footer-bottom{text-align:center;padding-top:1.5rem;font-size:.8rem}
+.footer {
+  background: var(--navy-dark);
+  padding: 36px 24px;
+}
+.footer-inner {
+  max-width: 1140px; margin: 0 auto;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.footer-brand {
+  font-size: 14px; font-weight: 600; color: rgba(255,255,255,.8);
+}
+.footer-copy {
+  font-size: 13px; color: rgba(255,255,255,.4);
+}
+.footer-links-row {
+  display: flex; gap: 20px; list-style: none;
+}
+.footer-links-row a {
+  font-size: 13px; color: rgba(255,255,255,.5);
+  transition: color .15s;
+}
+.footer-links-row a:hover { color: rgba(255,255,255,.9); }
+
+/* MODAL */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 200; display: none;
+  align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 12px; max-width: 640px; width: 100%;
+  max-height: 85vh; overflow-y: auto;
+  position: relative;
+}
+.modal-head {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-head .mbrand {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .5px; color: var(--blue); background: #eef3fa;
+  padding: 3px 8px; border-radius: 4px;
+  display: inline-block; margin-bottom: 8px;
+}
+.modal-head h2 {
+  font-size: 20px; font-weight: 700; color: var(--navy);
+  margin-bottom: 4px;
+}
+.modal-head .mcat {
+  font-size: 13px; color: var(--text-light);
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #f0f2f5; border: none; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center;
+  justify-content: center; color: var(--text-mid);
+  transition: background .15s;
+}
+.modal-close:hover { background: #e4e8ec; }
+.modal-body { padding: 24px; }
+.modal-body h3 {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--text-light);
+  margin-bottom: 12px;
+}
+.modal-body .specs-tbl {
+  width: 100%; border-collapse: collapse; margin-bottom: 24px;
+}
+.specs-tbl tr { border-bottom: 1px solid #f4f6f8; }
+.specs-tbl td {
+  padding: 8px 0; font-size: 14px;
+}
+.specs-tbl td:first-child {
+  font-weight: 600; color: var(--navy); width: 45%;
+  padding-right: 16px;
+}
+.features-list {
+  list-style: none;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.features-list li {
+  font-size: 14px; color: var(--text);
+  padding-left: 16px; position: relative;
+}
+.features-list li::before {
+  content: '';
+  position: absolute; left: 0; top: 8px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+}
+.modal-foot {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 10px;
+  background: #fafbfc; border-radius: 0 0 12px 12px;
+}
+.modal-foot .btn { flex: 1; justify-content: center; }
+
+/* NO RESULTS */
+.no-results {
+  text-align: center; padding: 48px 24px;
+  color: var(--text-light); font-size: 15px;
+}
 
 /* RESPONSIVE */
-@media(max-width:968px){
-.hero-inner{grid-template-columns:1fr;text-align:center;padding-top:7rem}
-.hero p{margin:0 auto 2rem}
-.hero-btns{justify-content:center}
-.hero-visual{order:-1}
-.hero-sun{width:200px;height:200px}
-.hero-sun-inner{width:100px;height:100px}
-.hero h1{font-size:2.5rem}
-.stats-grid{grid-template-columns:repeat(2,1fr)}
-.contact-grid{grid-template-columns:1fr}
-}
-@media(max-width:768px){
-.nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:var(--navy-dark);flex-direction:column;padding:1rem;gap:.3rem;border-radius:0 0 12px 12px}
-.nav-links.open{display:flex}
-.nav-toggle{display:flex}
-.hero h1{font-size:2rem}
-.products-grid{grid-template-columns:1fr}
-.feature-list{grid-template-columns:1fr}
-.modal{margin:1rem;max-height:85vh}
-.modal-actions{flex-direction:column}
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none; position: absolute;
+    top: 64px; left: 0; right: 0;
+    background: var(--white);
+    flex-direction: column; padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links .cta-link { margin-left: 0; text-align: center; }
+  .hero { padding: 100px 24px 60px; }
+  .hero h1 { font-size: 28px; }
+  .products-list { grid-template-columns: 1fr; }
+  .contact-inner { grid-template-columns: 1fr; }
+  .features-list { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; text-align: center; }
+  .modal { margin: 16px; }
+  .modal-foot { flex-direction: column; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav" id="nav">
-<div class="nav-inner">
-  <a href="#" class="nav-logo" onclick="goHome(event)">IS<span class="sun">☀</span>LAR</a>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#categorias" onclick="closeMenu()">Productos</a></li>
-    <li><a href="#paneles" onclick="filterAndScroll('paneles')">Paneles</a></li>
-    <li><a href="#inversores" onclick="filterAndScroll('inversores')">Inversores</a></li>
-    <li><a href="#baterias" onclick="filterAndScroll('baterias-gel')">Baterias</a></li>
-    <li><a href="#protecciones" onclick="filterAndScroll('protecciones')">Protecciones</a></li>
-    <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
-    <li><a href="https://wa.me/573001234567?text=Hola%2C%20quiero%20cotizar%20equipos%20solares" target="_blank" class="nav-cta">Cotizar</a></li>
-  </ul>
-  <button class="nav-toggle" id="navToggle" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </button>
-</div>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand" onclick="goTop(event)">i<span>S</span>olar</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#catalogo" onclick="cl()">Catalogo</a></li>
+      <li><a href="#nosotros" onclick="cl()">Nosotros</a></li>
+      <li><a href="#contacto" onclick="cl()">Contacto</a></li>
+      <li><a href="https://wa.me/573001234567?text=Hola%2C%20quiero%20cotizar%20equipos%20solares" target="_blank" class="cta-link">Cotizar</a></li>
+    </ul>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-<div class="hero-inner">
-  <div>
-    <div class="hero-badge">&#9889; Energia Solar Profesional</div>
-    <h1>Equipos de <span class="accent">Energia Solar</span> para cada proyecto</h1>
-    <p>Paneles, inversores, baterias, protecciones y todo lo que necesitas para tu sistema fotovoltaico. Marcas certificadas, asesoria experta.</p>
+  <div class="hero-inner">
+    <h1>Equipos de energia solar para cada proyecto</h1>
+    <p>Paneles, inversores, baterias, controladores y accesorios con certificacion RETIE. Asesoria tecnica y envio a todo Colombia.</p>
     <div class="hero-btns">
-      <a href="#catalogo" class="btn btn-primary">Ver Catalogo &#8594;</a>
-      <a href="https://wa.me/573001234567?text=Hola%2C%20necesito%20asesoria%20para%20un%20sistema%20solar" target="_blank" class="btn btn-outline">&#128172; Asesoria Gratis</a>
+      <a href="#catalogo" class="btn btn-green">Ver catalogo</a>
+      <a href="https://wa.me/573001234567?text=Hola%2C%20necesito%20asesoria%20para%20un%20sistema%20solar" target="_blank" class="btn btn-outline-w">Solicitar asesoria</a>
     </div>
   </div>
-  <div class="hero-visual">
-    <div class="hero-sun"><div class="hero-sun-inner"></div></div>
-  </div>
-</div>
 </section>
 
-<!-- STATS -->
-<div class="stats">
-<div class="stats-grid">
-  <div class="stat"><div class="stat-num" data-target="55">0</div><div class="stat-label">Productos Disponibles</div></div>
-  <div class="stat"><div class="stat-num" data-target="10">0</div><div class="stat-label">Marcas Certificadas</div></div>
-  <div class="stat"><div class="stat-num" data-target="7">0</div><div class="stat-label">Categorias</div></div>
-  <div class="stat"><div class="stat-num" data-target="12">0</div><div class="stat-label">Anos de Garantia</div></div>
-</div>
-</div>
-
-<!-- CATEGORIES -->
-<section class="section" id="categorias">
-<div class="section-inner">
-  <div class="section-header">
-    <h2>Nuestras Categorias</h2>
-    <p>Encuentra el equipo ideal para tu instalacion solar</p>
+<section class="catalog" id="catalogo">
+  <div class="catalog-inner">
+    <div class="catalog-header">
+      <h2>Catalogo de productos</h2>
+      <p>Selecciona una categoria para explorar los equipos disponibles</p>
+    </div>
+    <div class="cat-tabs" id="catTabs"></div>
+    <div class="products-list" id="productsGrid"></div>
   </div>
-  <div class="cat-grid" id="catGrid"></div>
-</div>
 </section>
 
-<!-- PRODUCTS CATALOG -->
-<section class="section products-section" id="catalogo">
-<div class="section-inner">
-  <div class="section-header">
-    <h2>Catalogo de Productos</h2>
-    <p>Haz clic en cualquier producto para ver especificaciones completas</p>
+<section class="why" id="nosotros">
+  <div class="why-inner">
+    <h2>Por que trabajar con iSolar</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-item-bar"></div>
+        <h3>Certificacion RETIE</h3>
+        <p>Productos certificados para sistemas fotovoltaicos conectados a red en Colombia.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-item-bar"></div>
+        <h3>Garantia de fabrica</h3>
+        <p>Hasta 12 anos en paneles solares y 10 anos en inversores on grid.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-item-bar"></div>
+        <h3>Asesoria tecnica</h3>
+        <p>Dimensionamiento gratuito de tu sistema solar. Te ayudamos a elegir los equipos correctos.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-item-bar"></div>
+        <h3>Envio nacional</h3>
+        <p>Despacho a todo Colombia con empaque protector especializado para equipos solares.</p>
+      </div>
+    </div>
   </div>
-  <div class="filter-bar" id="filterBar"></div>
-  <div class="products-grid" id="productsGrid"></div>
-</div>
 </section>
 
-<!-- WHY -->
-<section class="why-section">
-<div class="section-inner">
-  <div class="section-header">
-    <h2 style="color:#fff">&#191;Por que elegir iSolar?</h2>
-    <p style="color:rgba(255,255,255,.6)">Respaldamos cada proyecto con calidad y experiencia</p>
+<div class="brands">
+  <div class="brands-inner">
+    <h3>Marcas que distribuimos</h3>
+    <div class="brands-list">
+      <span>TW Solar</span>
+      <span>Astronergy</span>
+      <span>Runergy</span>
+      <span>SolaX</span>
+      <span>SAJ</span>
+      <span>SRNE</span>
+      <span>Belttt</span>
+      <span>GreenPoint</span>
+      <span>ZBeny</span>
+      <span>CoSostenible</span>
+    </div>
   </div>
-  <div class="why-grid">
-    <div class="why-card"><div class="icon">&#9989;</div><h3>Certificacion RETIE</h3><p>Productos con certificacion colombiana para sistemas fotovoltaicos conectados a red.</p></div>
-    <div class="why-card"><div class="icon">&#128274;</div><h3>Garantia Real</h3><p>Hasta 12 anos de garantia en paneles y 10 anos en inversores on-grid.</p></div>
-    <div class="why-card"><div class="icon">&#128218;</div><h3>Asesoria Tecnica</h3><p>Dimensionamiento gratuito de tu sistema solar. Te ayudamos a elegir lo correcto.</p></div>
-    <div class="why-card"><div class="icon">&#128666;</div><h3>Envio Nacional</h3><p>Despacho a todo Colombia con empaque protector profesional.</p></div>
-  </div>
-</div>
-</section>
-
-<!-- BRANDS -->
-<div class="section">
-<div class="section-inner">
-  <div class="section-header"><h2>Marcas que Distribuimos</h2></div>
-  <div class="brands-bar">
-    <span>TW Solar</span><span>Astronergy</span><span>Runergy</span><span>SolaX</span><span>SAJ</span><span>SRNE</span><span>Belttt</span><span>GreenPoint</span><span>ZBeny</span><span>CoSostenible</span>
-  </div>
-</div>
 </div>
 
-<!-- CONTACT -->
-<section class="section contact-section" id="contacto">
-<div class="section-inner">
-  <div class="contact-grid">
-    <div class="contact-info">
-      <h2>Solicita tu Cotizacion</h2>
-      <p>Cuentanos sobre tu proyecto y te enviamos una propuesta personalizada con los mejores equipos para tu instalacion solar.</p>
-      <div class="contact-detail"><div class="ic">&#128222;</div><div>WhatsApp: +57 300 123 4567</div></div>
-      <div class="contact-detail"><div class="ic">&#9993;</div><div>ventas@isolar.rednodetech.com</div></div>
-      <div class="contact-detail"><div class="ic">&#127968;</div><div>Colombia</div></div>
+<section class="contact" id="contacto">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <h2>Solicita tu cotizacion</h2>
+      <p>Cuentanos sobre tu proyecto y te enviamos una propuesta personalizada con los equipos ideales para tu instalacion.</p>
+      <div class="contact-item">
+        <div class="contact-item-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <div>WhatsApp: +57 300 123 4567</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+        </div>
+        <div>ventas@isolar.rednodetech.com</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>Colombia</div>
+      </div>
     </div>
     <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
-      <div class="form-group"><label>Nombre</label><input type="text" required placeholder="Tu nombre"></div>
-      <div class="form-group"><label>Telefono / WhatsApp</label><input type="tel" required placeholder="+57 ..."></div>
-      <div class="form-group"><label>Email</label><input type="email" placeholder="tu@email.com"></div>
-      <div class="form-group">
-        <label>Tipo de Proyecto</label>
+      <div class="fg"><label>Nombre</label><input type="text" required placeholder="Tu nombre"></div>
+      <div class="fg"><label>Telefono / WhatsApp</label><input type="tel" required placeholder="+57 ..."></div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="tu@email.com"></div>
+      <div class="fg">
+        <label>Tipo de proyecto</label>
         <select>
           <option value="">Selecciona...</option>
           <option>Residencial</option>
           <option>Comercial</option>
           <option>Industrial</option>
-          <option>Rural / Off-Grid</option>
-          <option>On-Grid / Inyeccion a red</option>
+          <option>Rural / Off Grid</option>
+          <option>On Grid / Inyeccion a red</option>
         </select>
       </div>
-      <div class="form-group"><label>Mensaje</label><textarea placeholder="Describe tu proyecto o los equipos que necesitas..."></textarea></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Enviar Solicitud &#8594;</button>
+      <div class="fg"><label>Mensaje</label><textarea placeholder="Describe tu proyecto o los equipos que necesitas..."></textarea></div>
+      <button type="submit" class="btn btn-green" style="width:100%;justify-content:center">Enviar solicitud</button>
     </form>
   </div>
-</div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-<div class="footer-inner">
-  <div class="footer-top">
-    <div class="footer-logo">IS☀LAR Energias Renovables</div>
-    <ul class="footer-links">
-      <li><a href="#categorias">Productos</a></li>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">iSolar Energias Renovables</div>
+    <ul class="footer-links-row">
       <li><a href="#catalogo">Catalogo</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
+    <div class="footer-copy">2024 iSolar. Todos los derechos reservados.</div>
   </div>
-  <div class="footer-bottom">&copy; 2024 iSolar Energias Renovables. Todos los derechos reservados.</div>
-</div>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-<div class="modal">
-  <button class="modal-close" onclick="closeModal()">&times;</button>
-  <div class="modal-header">
-    <span class="brand-tag" id="modalBrand"></span>
-    <h2 id="modalTitle"></h2>
-    <div class="cat-tag" id="modalCat"></div>
-  </div>
-  <div class="modal-body">
-    <div class="modal-section">
-      <h3>Especificaciones Tecnicas</h3>
-      <table class="specs-table" id="modalSpecs"></table>
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-head">
+      <span class="mbrand" id="modalBrand"></span>
+      <h2 id="modalTitle"></h2>
+      <div class="mcat" id="modalCat"></div>
     </div>
-    <div class="modal-section">
+    <div class="modal-body">
+      <h3>Especificaciones</h3>
+      <table class="specs-tbl" id="modalSpecs"></table>
       <h3>Caracteristicas</h3>
-      <ul class="feature-list" id="modalFeatures"></ul>
+      <ul class="features-list" id="modalFeatures"></ul>
+    </div>
+    <div class="modal-foot">
+      <a id="modalWa" href="#" target="_blank" class="btn btn-green btn-sm">Cotizar por WhatsApp</a>
+      <button class="btn btn-sm-ghost" onclick="closeModal()" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer">Cerrar</button>
     </div>
   </div>
-  <div class="modal-actions">
-    <a id="modalWa" href="#" target="_blank" class="btn btn-primary btn-sm">&#128172; Cotizar por WhatsApp</a>
-    <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cerrar</button>
-  </div>
-</div>
 </div>
 
 <script>
 const CATS = {
-  'paneles':       { label: 'Paneles Solares',    icon: '☀️', desc: 'N-Type bifaciales de alta eficiencia' },
-  'inversores':    { label: 'Inversores',          icon: '⚡', desc: 'On-Grid, Off-Grid, Cargadores' },
-  'baterias-gel':  { label: 'Baterias de Gel',     icon: '🔋', desc: 'Ciclo profundo, libre mantenimiento' },
-  'baterias-litio':{ label: 'Baterias de Litio',   icon: '🔋', desc: 'LiFePO4 larga vida, BMS integrado' },
-  'controladores': { label: 'Controladores',       icon: '🎛️', desc: 'PWM y MPPT para carga solar' },
-  'protecciones':  { label: 'Protecciones',         icon: '🛡️', desc: 'Breakers DC y supresores de picos' },
-  'estructura':    { label: 'Estructura',           icon: '🏗️', desc: 'Rieles, clamps y accesorios' },
-  'accesorios':    { label: 'Accesorios',           icon: '📡', desc: 'Modulos WiFi y monitoreo' }
+  paneles:        'Paneles Solares',
+  inversores:     'Inversores',
+  controladores:  'Controladores',
+  'baterias-gel': 'Baterias de Gel',
+  'baterias-litio':'Baterias de Litio',
+  protecciones:   'Protecciones',
+  estructura:     'Estructura',
+  accesorios:     'Accesorios'
 };
 
 let products = [];
-let activeFilter = 'todos';
+let active = 'paneles';
 
 async function init() {
   const res = await fetch('/api/products');
   products = await res.json();
-  renderCats();
-  renderFilters();
+  renderTabs();
   renderProducts();
-  animateCounters();
 }
 
-function renderCats() {
-  const grid = document.getElementById('catGrid');
-  grid.innerHTML = Object.entries(CATS).map(([key, c]) => {
-    const count = products.filter(p => p.category === key).length;
-    return `<div class="cat-card" onclick="filterAndScroll('${key}')">
-      <div class="icon">${c.icon}</div>
-      <h3>${c.label}</h3>
-      <span>${count} productos</span>
-    </div>`;
+function renderTabs() {
+  const el = document.getElementById('catTabs');
+  el.innerHTML = Object.entries(CATS).map(([key, label]) => {
+    const n = products.filter(p => p.category === key).length;
+    return '<button class="cat-tab' + (key === active ? ' active' : '') +
+      '" onclick="setTab(\'' + key + '\',this)">' +
+      label + '<span class="count">(' + n + ')</span></button>';
   }).join('');
 }
 
-function renderFilters() {
-  const bar = document.getElementById('filterBar');
-  let html = `<button class="filter-btn active" onclick="setFilter('todos')">Todos</button>`;
-  for (const [key, c] of Object.entries(CATS)) {
-    html += `<button class="filter-btn" onclick="setFilter('${key}')">${c.label}</button>`;
-  }
-  bar.innerHTML = html;
-}
-
-function setFilter(cat) {
-  activeFilter = cat;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+function setTab(cat, btn) {
+  active = cat;
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
   renderProducts();
-}
-
-function filterAndScroll(cat) {
-  closeMenu();
-  activeFilter = cat;
-  renderProducts();
-  document.querySelectorAll('.filter-btn').forEach(b => {
-    b.classList.toggle('active', b.textContent === (CATS[cat]?.label || 'Todos'));
-  });
-  setTimeout(() => document.getElementById('catalogo').scrollIntoView({behavior:'smooth'}), 100);
 }
 
 function renderProducts() {
   const grid = document.getElementById('productsGrid');
-  let list = products;
-  if (activeFilter !== 'todos') {
-    if (activeFilter === 'baterias') {
-      list = products.filter(p => p.category.startsWith('baterias'));
-    } else {
-      list = products.filter(p => p.category === activeFilter);
-    }
+  const list = products.filter(p => p.category === active);
+  if (!list.length) {
+    grid.innerHTML = '<div class="no-results">No hay productos en esta categoria.</div>';
+    return;
   }
   grid.innerHTML = list.map(p => {
-    const specKeys = Object.keys(p.specs).slice(0, 3);
-    return `<div class="product-card" onclick="openModal('${p.id}')">
-      <div class="product-card-top">
-        <span class="product-badge brand">${p.brand}</span>
-        <span class="spec-tag">${p.subcategory}</span>
-      </div>
-      <div class="product-card-body">
-        <h3>${p.name}</h3>
-        <div class="specs-preview">${specKeys.map(k => `<span class="spec-tag">${p.specs[k]}</span>`).join('')}</div>
-        <div class="cta-row">
-          <button class="btn-sm btn-green" onclick="event.stopPropagation();openWa('${p.name}')">&#128172; Cotizar</button>
-          <button class="btn-sm btn-ghost" onclick="event.stopPropagation();openModal('${p.id}')">Ver detalles</button>
-        </div>
-      </div>
-    </div>`;
+    const specs = Object.entries(p.specs).slice(0, 3);
+    return '<div class="p-card" onclick="openModal(\'' + p.id + '\')">' +
+      '<div class="p-card-top">' +
+        '<span class="p-card-brand">' + p.brand + '</span>' +
+        '<span class="p-card-sub">' + p.subcategory + '</span>' +
+      '</div>' +
+      '<h3>' + p.name + '</h3>' +
+      '<div class="p-card-specs">' +
+        specs.map(([,v]) => '<span class="p-spec">' + v + '</span>').join('') +
+      '</div>' +
+      '<div class="p-card-actions">' +
+        '<button class="btn-sm btn-sm-green" onclick="event.stopPropagation();openWa(\'' + esc(p.name) + '\')">Cotizar</button>' +
+        '<button class="btn-sm btn-sm-ghost" onclick="event.stopPropagation();openModal(\'' + p.id + '\')">Ver detalles</button>' +
+      '</div>' +
+    '</div>';
   }).join('');
 }
+
+function esc(s) { return s.replace(/'/g, "\\'"); }
 
 function openModal(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
   document.getElementById('modalBrand').textContent = p.brand;
   document.getElementById('modalTitle').textContent = p.name;
-  document.getElementById('modalCat').textContent = (CATS[p.category]?.label || p.category) + ' / ' + p.subcategory;
-  document.getElementById('modalSpecs').innerHTML = Object.entries(p.specs).map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
-  document.getElementById('modalFeatures').innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
+  document.getElementById('modalCat').textContent = (CATS[p.category] || p.category) + ' / ' + p.subcategory;
+  document.getElementById('modalSpecs').innerHTML = Object.entries(p.specs)
+    .map(([k,v]) => '<tr><td>' + k + '</td><td>' + v + '</td></tr>').join('');
+  document.getElementById('modalFeatures').innerHTML = p.features
+    .map(f => '<li>' + f + '</li>').join('');
   document.getElementById('modalWa').href = waUrl(p.name);
-  document.getElementById('modal').classList.add('show');
+  document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
-  document.getElementById('modal').classList.remove('show');
+  document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
 }
 
 function waUrl(name) {
-  return `https://wa.me/573001234567?text=${encodeURIComponent('Hola, me interesa cotizar: ' + name)}`;
+  return 'https://wa.me/573001234567?text=' + encodeURIComponent('Hola, me interesa cotizar: ' + name);
 }
 function openWa(name) { window.open(waUrl(name), '_blank'); }
 
-function toggleMenu() {
-  document.getElementById('navLinks').classList.toggle('open');
-}
-function closeMenu() {
-  document.getElementById('navLinks').classList.remove('open');
-}
-
-function goHome(e) {
-  e.preventDefault();
-  closeMenu();
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function animateCounters() {
-  document.querySelectorAll('.stat-num').forEach(el => {
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        const target = +el.dataset.target;
-        const duration = 1500;
-        const start = performance.now();
-        (function tick(now) {
-          const p = Math.min((now - start) / duration, 1);
-          el.textContent = Math.floor(target * (1 - Math.pow(1 - p, 3)));
-          if (p < 1) requestAnimationFrame(tick);
-        })(start);
-        observer.disconnect();
-      }
-    }, {threshold: .5});
-    observer.observe(el);
-  });
-}
-
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', scrollY > 50);
-});
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function goTop(e) { e.preventDefault(); cl(); window.scrollTo({top:0,behavior:'smooth'}); }
+function cl() { document.getElementById('navLinks').classList.remove('open'); }
 
 function handleSubmit(e) {
   e.preventDefault();
   const btn = e.target.querySelector('button[type="submit"]');
-  btn.textContent = '✓ Enviado!';
-  btn.style.background = '#4CAF50';
-  setTimeout(() => { btn.innerHTML = 'Enviar Solicitud &#8594;'; btn.style.background = ''; e.target.reset(); }, 3000);
+  btn.textContent = 'Enviado';
+  btn.style.background = '#257a34';
+  setTimeout(() => { btn.textContent = 'Enviar solicitud'; btn.style.background = ''; e.target.reset(); }, 3000);
 }
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('shadow', scrollY > 20);
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+  a.addEventListener('click', () => cl());
+});
 
 init();
 </script>
