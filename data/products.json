@@ -1,0 +1,612 @@
+[
+  {
+    "id": "pwm-gris-10a",
+    "category": "controladores",
+    "subcategory": "PWM",
+    "name": "Controlador PWM Gris 10A",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "130W(12V) / 260W(24V)", "Voltaje max entrada FV": "50V" },
+    "features": ["Identificacion automatica del voltaje", "Proteccion contra sobrecarga y descarga", "Puerto USB"],
+    "reference": "10A"
+  },
+  {
+    "id": "pwm-gris-20a",
+    "category": "controladores",
+    "subcategory": "PWM",
+    "name": "Controlador PWM Gris 20A",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "260W(12V) / 520W(24V)", "Voltaje max entrada FV": "50V" },
+    "features": ["Identificacion automatica del voltaje", "Proteccion contra sobrecarga y descarga", "Puerto USB"],
+    "reference": "20A"
+  },
+  {
+    "id": "pwm-gris-30a",
+    "category": "controladores",
+    "subcategory": "PWM",
+    "name": "Controlador PWM Gris 30A",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "390W(12V) / 780W(24V)", "Voltaje max entrada FV": "50V" },
+    "features": ["Identificacion automatica del voltaje", "Proteccion contra sobrecarga y descarga", "Puerto USB"],
+    "reference": "30A"
+  },
+  {
+    "id": "pwm-gris-40a",
+    "category": "controladores",
+    "subcategory": "PWM",
+    "name": "Controlador PWM Gris 40A",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje": "12V/24V/48V", "Potencia max entrada FV": "520W(12V) / 1,040W(24V) / 2,080W(48V)", "Voltaje max entrada FV": "100V" },
+    "features": ["Identificacion automatica del voltaje", "Proteccion contra sobrecarga y descarga", "Puerto USB"],
+    "reference": "40A"
+  },
+  {
+    "id": "pwm-gris-60a",
+    "category": "controladores",
+    "subcategory": "PWM",
+    "name": "Controlador PWM Gris 60A",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje": "12V/24V/48V", "Potencia max entrada FV": "780W(12V) / 1,560W(24V) / 3,120W(48V)", "Voltaje max entrada FV": "100V" },
+    "features": ["Identificacion automatica del voltaje", "Proteccion contra sobrecarga y descarga", "Puerto USB"],
+    "reference": "60A"
+  },
+  {
+    "id": "pwm-verde-10a",
+    "category": "controladores",
+    "subcategory": "PWM",
+    "name": "Controlador PWM Verde 10A",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "130W(12V) / 260W(24V)", "Voltaje max entrada FV": "50V" },
+    "features": ["Doble entrada de panel", "Identificacion automatica del voltaje", "Puerto USB"],
+    "reference": "10A"
+  },
+  {
+    "id": "pwm-verde-20a",
+    "category": "controladores",
+    "subcategory": "PWM",
+    "name": "Controlador PWM Verde 20A",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "260W(12V) / 520W(24V)", "Voltaje max entrada FV": "50V" },
+    "features": ["Doble entrada de panel", "Identificacion automatica del voltaje", "Puerto USB"],
+    "reference": "20A"
+  },
+  {
+    "id": "mppt-shiner-20a",
+    "category": "controladores",
+    "subcategory": "MPPT",
+    "name": "Controlador MPPT Shiner 20A",
+    "brand": "SRNE",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "260W(12V) / 520W(24V)", "Voltaje max entrada FV": "60V" },
+    "features": ["Tecnologia MPPT", "Mayor eficiencia de conversion", "Pantalla LCD"],
+    "reference": "20A"
+  },
+  {
+    "id": "mppt-shiner-30a",
+    "category": "controladores",
+    "subcategory": "MPPT",
+    "name": "Controlador MPPT Shiner 30A",
+    "brand": "SRNE",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "400W(12V) / 800W(24V)", "Voltaje max entrada FV": "100V" },
+    "features": ["Tecnologia MPPT", "Mayor eficiencia de conversion", "Pantalla LCD"],
+    "reference": "30A"
+  },
+  {
+    "id": "mppt-shiner-40a",
+    "category": "controladores",
+    "subcategory": "MPPT",
+    "name": "Controlador MPPT Shiner 40A",
+    "brand": "SRNE",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "550W(12V) / 1,040W(24V)", "Voltaje max entrada FV": "100V" },
+    "features": ["Tecnologia MPPT", "Mayor eficiencia de conversion", "Pantalla LCD"],
+    "reference": "40A"
+  },
+  {
+    "id": "mppt-mf-60a",
+    "category": "controladores",
+    "subcategory": "MPPT",
+    "name": "Controlador MPPT Serie MF 60A",
+    "brand": "SRNE",
+    "specs": { "Voltaje": "12V/24V/48V", "Potencia max entrada FV": "800W(12V) / 1,600W(24V) / 3,200W(48V)", "Voltaje max entrada FV": "150V" },
+    "features": ["Tecnologia MPPT", "Triple voltaje", "Alta potencia"],
+    "reference": "60A"
+  },
+  {
+    "id": "mppt-mc-50a",
+    "category": "controladores",
+    "subcategory": "MPPT",
+    "name": "Controlador MPPT Serie MC 50A",
+    "brand": "SRNE",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "660W(12V) / 1,320W(24V)", "Voltaje max entrada FV": "92V" },
+    "features": ["Tecnologia MPPT", "Compacto", "Pantalla LCD"],
+    "reference": "50A"
+  },
+  {
+    "id": "mppt-ml-20a",
+    "category": "controladores",
+    "subcategory": "MPPT",
+    "name": "Controlador MPPT Serie ML 20A",
+    "brand": "SRNE",
+    "specs": { "Voltaje": "12V/24V", "Potencia max entrada FV": "260W(12V) / 520W(24V)", "Voltaje max entrada FV": "100V" },
+    "features": ["Tecnologia MPPT", "Compacto", "Display LED"],
+    "reference": "20A"
+  },
+  {
+    "id": "inv-onda-pura-bep-600w",
+    "category": "inversores",
+    "subcategory": "Onda Pura",
+    "name": "Inversor Onda Pura BEP 600W",
+    "brand": "Belttt",
+    "specs": { "Voltaje": "12V/24V", "Potencia pico": "1,200W", "Voltaje de salida": "110VAC/120VAC" },
+    "features": ["Eficiencia >= 95%", "Alta frecuencia", "Refrigeracion inteligente", "Onda senoidal pura", "Pantalla LCD"],
+    "reference": "600W"
+  },
+  {
+    "id": "inv-onda-pura-bep-1000w",
+    "category": "inversores",
+    "subcategory": "Onda Pura",
+    "name": "Inversor Onda Pura BEP 1000W",
+    "brand": "Belttt",
+    "specs": { "Voltaje": "12V/24V", "Potencia pico": "2,000W", "Voltaje de salida": "110VAC/120VAC" },
+    "features": ["Eficiencia >= 95%", "Alta frecuencia", "Refrigeracion inteligente", "Onda senoidal pura", "Pantalla LCD"],
+    "reference": "1000W"
+  },
+  {
+    "id": "inv-onda-pura-bep-1500w",
+    "category": "inversores",
+    "subcategory": "Onda Pura",
+    "name": "Inversor Onda Pura BEP 1500W",
+    "brand": "Belttt",
+    "specs": { "Voltaje": "12V/24V", "Potencia pico": "3,000W", "Voltaje de salida": "110VAC/120VAC" },
+    "features": ["Eficiencia >= 95%", "Alta frecuencia", "Refrigeracion inteligente", "Onda senoidal pura", "Pantalla LCD"],
+    "reference": "1500W"
+  },
+  {
+    "id": "inv-onda-pura-bbp-2000w",
+    "category": "inversores",
+    "subcategory": "Onda Pura",
+    "name": "Inversor Onda Pura BBP 2000W",
+    "brand": "Belttt",
+    "specs": { "Voltaje": "12V/24V", "Potencia pico": "4,000W", "Voltaje de salida": "110VAC/120VAC" },
+    "features": ["Eficiencia >= 95%", "Alta frecuencia", "Refrigeracion inteligente", "Onda senoidal pura", "Pantalla LCD"],
+    "reference": "2000W"
+  },
+  {
+    "id": "inv-onda-pura-bbp-3000w",
+    "category": "inversores",
+    "subcategory": "Onda Pura",
+    "name": "Inversor Onda Pura BBP 3000W",
+    "brand": "Belttt",
+    "specs": { "Voltaje": "12V/24V", "Potencia pico": "6,000W", "Voltaje de salida": "110VAC/120VAC" },
+    "features": ["Eficiencia >= 95%", "Alta frecuencia", "Refrigeracion inteligente", "Onda senoidal pura", "Pantalla LCD"],
+    "reference": "3000W"
+  },
+  {
+    "id": "inv-onda-mod-bel-500w",
+    "category": "inversores",
+    "subcategory": "Onda Modificada",
+    "name": "Inversor Onda Modificada BEL 500W",
+    "brand": "Belttt",
+    "specs": { "Voltaje": "12V", "Potencia pico": "1,000W", "Voltaje de salida": "110VAC/120VAC" },
+    "features": ["Ideal para cargas resistivas", "Refrigeracion inteligente", "Puerto USB"],
+    "reference": "500W"
+  },
+  {
+    "id": "inv-onda-mod-bel-1000w",
+    "category": "inversores",
+    "subcategory": "Onda Modificada",
+    "name": "Inversor Onda Modificada BEL 1000W",
+    "brand": "Belttt",
+    "specs": { "Voltaje": "12V-24V", "Potencia pico": "2,000W", "Voltaje de salida": "110VAC/120VAC" },
+    "features": ["Ideal para cargas resistivas", "Refrigeracion inteligente", "Puerto USB"],
+    "reference": "1000W"
+  },
+  {
+    "id": "inv-cargador-hf-1200w-12v",
+    "category": "inversores",
+    "subcategory": "Cargadores",
+    "name": "Inversor Cargador HF 1200W 12V",
+    "brand": "GreenPoint",
+    "specs": { "Potencia pico": "2,400W", "Voltaje": "12V", "MPPT": "60A", "Potencia max paneles": "800W", "VOC": "15V - 150V", "Conexion red": "110/120 VAC" },
+    "features": ["MPPT incorporado", "Compatible con todo tipo de bateria", "Alimentacion de red electrica", "Onda senoidal pura", "Modulo WiFi compatible"],
+    "reference": "1200W"
+  },
+  {
+    "id": "inv-cargador-hf-1600w",
+    "category": "inversores",
+    "subcategory": "Cargadores",
+    "name": "Inversor Cargador HF 1600W",
+    "brand": "GreenPoint",
+    "specs": { "Potencia pico": "3,200W", "Voltaje": "12V", "MPPT": "60A", "Potencia max paneles": "800W", "VOC": "15V - 150V", "Conexion red": "110/120 VAC" },
+    "features": ["MPPT incorporado", "Compatible con todo tipo de bateria", "Onda senoidal pura", "Modulo WiFi compatible"],
+    "reference": "1600W"
+  },
+  {
+    "id": "inv-cargador-hf-2400w",
+    "category": "inversores",
+    "subcategory": "Cargadores",
+    "name": "Inversor Cargador HF 2400W",
+    "brand": "GreenPoint",
+    "specs": { "Potencia pico": "4,800W", "Voltaje": "24V", "MPPT": "60A", "Potencia max paneles": "1,600W", "VOC": "30V - 150V", "Conexion red": "110/120 VAC" },
+    "features": ["MPPT incorporado", "Compatible con todo tipo de bateria", "Onda senoidal pura", "Modulo WiFi compatible"],
+    "reference": "2400W"
+  },
+  {
+    "id": "inv-cargador-hf-3000w-gp",
+    "category": "inversores",
+    "subcategory": "Cargadores",
+    "name": "Inversor Cargador HF 3000W GreenPoint",
+    "brand": "GreenPoint",
+    "specs": { "Potencia pico": "6,000W", "Voltaje": "24V", "MPPT": "60A", "Potencia max paneles": "1,600W", "VOC": "30V - 150V", "Conexion red": "110/120 VAC" },
+    "features": ["MPPT incorporado", "Compatible con todo tipo de bateria", "Onda senoidal pura", "Modulo WiFi compatible"],
+    "reference": "3000W"
+  },
+  {
+    "id": "inv-cargador-hf-3000w-srne",
+    "category": "inversores",
+    "subcategory": "Cargadores",
+    "name": "Inversor Cargador HF 3000W SRNE",
+    "brand": "SRNE",
+    "specs": { "Potencia pico": "6,000VA", "Voltaje": "24V", "MPPT": "80A", "Potencia max paneles": "4,500W", "VOC": "120V - 500V", "Conexion red": "110/120 VAC" },
+    "features": ["MPPT incorporado", "Compatible con bateria litio y ciclo profundo", "Alimentacion red electrica", "Certificado RETIE", "Modulo WiFi compatible"],
+    "reference": "3000W HF"
+  },
+  {
+    "id": "inv-cargador-hyp-5000w",
+    "category": "inversores",
+    "subcategory": "Cargadores",
+    "name": "Inversor Cargador HYP 5000W",
+    "brand": "SRNE",
+    "specs": { "Potencia pico": "10,000VA", "Voltaje": "48V", "MPPT": "100A", "Potencia max paneles": "5,500W", "VOC": "120V - 500V", "Conexion red": "110/120 VAC" },
+    "features": ["MPPT incorporado", "Emparejar hasta 6 unidades", "Compatible con bateria litio y ciclo profundo", "Certificado RETIE"],
+    "reference": "5000W HYP"
+  },
+  {
+    "id": "inv-ongrid-x3-mic-6000w",
+    "category": "inversores",
+    "subcategory": "On-Grid",
+    "name": "Inversor On-Grid X3-MIC G2 6kW",
+    "brand": "SolaX",
+    "specs": { "Potencia max entrada FV": "12,000W", "Rango voltaje MPPT": "120 - 650V", "Corriente salida AC": "15.8A", "VOC": "800V", "MPPT/Cadenas": "2/1" },
+    "features": ["10 anos de garantia", "Sobredimensionamiento 100%", "IP66", "Certificacion anti-isla RETIE", "WiFi incluido"],
+    "reference": "6000W"
+  },
+  {
+    "id": "inv-ongrid-x3-mic-8000w",
+    "category": "inversores",
+    "subcategory": "On-Grid",
+    "name": "Inversor On-Grid X3-MIC G2 8kW",
+    "brand": "SolaX",
+    "specs": { "Potencia max entrada FV": "16,000W", "Rango voltaje MPPT": "120 - 650V", "Corriente salida AC": "21A", "VOC": "800V", "MPPT/Cadenas": "2/1" },
+    "features": ["10 anos de garantia", "Sobredimensionamiento 100%", "IP66", "Certificacion anti-isla RETIE", "WiFi incluido"],
+    "reference": "8000W"
+  },
+  {
+    "id": "inv-ongrid-x3-pro-10000w",
+    "category": "inversores",
+    "subcategory": "On-Grid",
+    "name": "Inversor On-Grid X3-PRO G2 10kW",
+    "brand": "SolaX",
+    "specs": { "Potencia max entrada FV": "20,000W", "Rango voltaje MPPT": "160 - 650V", "Corriente salida AC": "26.3A", "VOC": "800V", "MPPT/Cadenas": "2/2" },
+    "features": ["10 anos de garantia", "Sobredimensionamiento 100%", "IP66", "Certificacion anti-isla RETIE", "WiFi incluido"],
+    "reference": "10000W"
+  },
+  {
+    "id": "inv-ongrid-x3-pro-15000w",
+    "category": "inversores",
+    "subcategory": "On-Grid",
+    "name": "Inversor On-Grid X3-PRO G2 15kW",
+    "brand": "SolaX",
+    "specs": { "Potencia max entrada FV": "30,000W", "Rango voltaje MPPT": "160 - 650V", "Corriente salida AC": "39.4A", "VOC": "800V", "MPPT/Cadenas": "2/2" },
+    "features": ["10 anos de garantia", "Sobredimensionamiento 100%", "IP66", "Certificacion anti-isla RETIE", "WiFi incluido"],
+    "reference": "15000W"
+  },
+  {
+    "id": "inv-ongrid-saj-20kw",
+    "category": "inversores",
+    "subcategory": "On-Grid",
+    "name": "Inversor On-Grid SAJ R6 20kW",
+    "brand": "SAJ",
+    "specs": { "Potencia max FV": "30,000W", "Tension CC max": "1100V", "Rango tension MPPT": "180 - 1000V", "MPPT/String": "3/2", "Tension entrada": "3L+N+PE 220V/127V" },
+    "features": ["Sobredimensionamiento 50%", "IP65", "Certificacion anti-isla RETIE", "Proteccion CC/CA Tipo II"],
+    "reference": "20kW"
+  },
+  {
+    "id": "inv-ongrid-saj-25kw",
+    "category": "inversores",
+    "subcategory": "On-Grid",
+    "name": "Inversor On-Grid SAJ R6 25kW",
+    "brand": "SAJ",
+    "specs": { "Potencia max FV": "37,500W", "Tension CC max": "1100V", "Rango tension MPPT": "180 - 1000V", "MPPT/String": "4/2", "Tension entrada": "3L+N+PE 220V/127V" },
+    "features": ["Sobredimensionamiento 50%", "IP65", "Certificacion anti-isla RETIE", "Proteccion CC/CA Tipo II"],
+    "reference": "25kW"
+  },
+  {
+    "id": "inv-ongrid-saj-50kw",
+    "category": "inversores",
+    "subcategory": "On-Grid",
+    "name": "Inversor On-Grid SAJ C6 50kW",
+    "brand": "SAJ",
+    "specs": { "Potencia max FV": "100kWp", "Tension CC max": "1100V", "Rango tension MPPT": "180 - 1000V", "MPPT/String": "6/2" },
+    "features": ["Sobredimensionamiento 100%", "IP66", "Industrial"],
+    "reference": "50kW"
+  },
+  {
+    "id": "inv-ongrid-saj-75kw",
+    "category": "inversores",
+    "subcategory": "On-Grid",
+    "name": "Inversor On-Grid SAJ C6 75kW",
+    "brand": "SAJ",
+    "specs": { "Potencia max FV": "144kWp", "Tension CC max": "1100V", "Rango tension MPPT": "180 - 1000V", "MPPT/String": "12/2" },
+    "features": ["Sobredimensionamiento 100%", "IP66", "Industrial"],
+    "reference": "75kW"
+  },
+  {
+    "id": "bat-gel-40ah",
+    "category": "baterias-gel",
+    "subcategory": "Gel",
+    "name": "Bateria Gel 6-CNFJ 40Ah",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12V", "Corriente continua": "40Ah", "Ciclos": "1400 DOD 50%" },
+    "features": ["Disenada para sistemas fotovoltaicos", "Profundidad de descarga 50%", "Electrolito gelificado", "Libre de mantenimiento"],
+    "reference": "40Ah"
+  },
+  {
+    "id": "bat-gel-55ah",
+    "category": "baterias-gel",
+    "subcategory": "Gel",
+    "name": "Bateria Gel 6-CNFJ 55Ah",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12V", "Corriente continua": "55Ah", "Ciclos": "1400 DOD 50%" },
+    "features": ["Disenada para sistemas fotovoltaicos", "Profundidad de descarga 50%", "Electrolito gelificado", "Libre de mantenimiento"],
+    "reference": "55Ah"
+  },
+  {
+    "id": "bat-gel-80ah",
+    "category": "baterias-gel",
+    "subcategory": "Gel",
+    "name": "Bateria Gel 6-CNFJ 80Ah",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12V", "Corriente continua": "80Ah", "Ciclos": "1400 DOD 50%" },
+    "features": ["Disenada para sistemas fotovoltaicos", "Profundidad de descarga 50%", "Electrolito gelificado", "Libre de mantenimiento"],
+    "reference": "80Ah"
+  },
+  {
+    "id": "bat-gel-100ah",
+    "category": "baterias-gel",
+    "subcategory": "Gel",
+    "name": "Bateria Gel 6-CNFJ 100Ah",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12V", "Corriente continua": "100Ah", "Ciclos": "1400 DOD 50%" },
+    "features": ["Disenada para sistemas fotovoltaicos", "Profundidad de descarga 50%", "Electrolito gelificado", "Libre de mantenimiento"],
+    "reference": "100Ah"
+  },
+  {
+    "id": "bat-gel-150ah",
+    "category": "baterias-gel",
+    "subcategory": "Gel",
+    "name": "Bateria Gel 6-CNFJ 150Ah",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12V", "Corriente continua": "150Ah", "Ciclos": "1400 DOD 50%" },
+    "features": ["Disenada para sistemas fotovoltaicos", "Profundidad de descarga 50%", "Electrolito gelificado", "Libre de mantenimiento"],
+    "reference": "150Ah"
+  },
+  {
+    "id": "bat-gel-200ah",
+    "category": "baterias-gel",
+    "subcategory": "Gel",
+    "name": "Bateria Gel 6-CNFJ 200Ah",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12V", "Corriente continua": "200Ah", "Ciclos": "1400 DOD 50%" },
+    "features": ["Disenada para sistemas fotovoltaicos", "Profundidad de descarga 50%", "Electrolito gelificado", "Libre de mantenimiento"],
+    "reference": "200Ah"
+  },
+  {
+    "id": "bat-gel-250ah",
+    "category": "baterias-gel",
+    "subcategory": "Gel",
+    "name": "Bateria Gel 6-CNFJ 250Ah",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12V", "Corriente continua": "250Ah", "Ciclos": "1400 DOD 50%" },
+    "features": ["Disenada para sistemas fotovoltaicos", "Profundidad de descarga 50%", "Electrolito gelificado", "Libre de mantenimiento"],
+    "reference": "250Ah"
+  },
+  {
+    "id": "bat-litio-rack-100ah",
+    "category": "baterias-litio",
+    "subcategory": "Litio Rack",
+    "name": "Bateria Litio Rack 100Ah 51.2V",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "51.2V", "Corriente continua": "100Ah", "Ciclos": "6000 DOD 80%" },
+    "features": ["Comunicacion BMS (CAN y RS485)", "Celdas prismaticas grado A", "Montaje piso apilado o bastidor", "WiFi integrado"],
+    "reference": "100Ah 51.2V"
+  },
+  {
+    "id": "bat-litio-rack-200ah",
+    "category": "baterias-litio",
+    "subcategory": "Litio Rack",
+    "name": "Bateria Litio Rack 200Ah 51.2V",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "51.2V", "Corriente continua": "200Ah", "Ciclos": "6000 DOD 80%" },
+    "features": ["Comunicacion BMS (CAN y RS485)", "Celdas prismaticas grado A", "Montaje piso apilado o bastidor", "WiFi integrado"],
+    "reference": "200Ah 51.2V"
+  },
+  {
+    "id": "bat-litio-mono-100ah-12v",
+    "category": "baterias-litio",
+    "subcategory": "Litio Monoblock",
+    "name": "Bateria Litio Monoblock 100Ah 12.8V",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12.8V", "Corriente continua": "100Ah", "Ciclos": "6000 (0.2C DOD 80%)" },
+    "features": ["BMS incorporado", "Celdas prismaticas grado A", "LiFePO4 alta calidad"],
+    "reference": "100Ah 12.8V"
+  },
+  {
+    "id": "bat-litio-mono-200ah-12v",
+    "category": "baterias-litio",
+    "subcategory": "Litio Monoblock",
+    "name": "Bateria Litio Monoblock 200Ah 12.8V",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "12.8V", "Corriente continua": "200Ah", "Ciclos": "6000 (0.2C DOD 80%)" },
+    "features": ["BMS incorporado", "Celdas prismaticas grado A", "LiFePO4 alta calidad"],
+    "reference": "200Ah 12.8V"
+  },
+  {
+    "id": "bat-litio-mono-100ah-25v",
+    "category": "baterias-litio",
+    "subcategory": "Litio Monoblock",
+    "name": "Bateria Litio Monoblock 100Ah 25.6V",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "25.6V", "Corriente continua": "100Ah", "Ciclos": "6000 (0.2C DOD 80%)" },
+    "features": ["BMS incorporado", "Celdas prismaticas grado A", "LiFePO4 alta calidad"],
+    "reference": "100Ah 25.6V"
+  },
+  {
+    "id": "bat-litio-mono-200ah-25v",
+    "category": "baterias-litio",
+    "subcategory": "Litio Monoblock",
+    "name": "Bateria Litio Monoblock 200Ah 25.6V",
+    "brand": "GreenPoint",
+    "specs": { "Voltaje nominal": "25.6V", "Corriente continua": "200Ah", "Ciclos": "6000 (0.2C DOD 80%)" },
+    "features": ["BMS incorporado", "Celdas prismaticas grado A", "LiFePO4 alta calidad"],
+    "reference": "200Ah 25.6V"
+  },
+  {
+    "id": "panel-tw-620w",
+    "category": "paneles",
+    "subcategory": "Tipo-N Bifaciales",
+    "name": "Panel Solar TW Solar 620W",
+    "brand": "TW Solar",
+    "specs": { "Potencia maxima": "620Wp", "Tipo celula": "TNC (N Type Monocrystalline)", "Eficiencia": "23.0%", "Voc": "49.10V", "Isc": "16.06A", "Vmpp": "40.82V", "Impp": "15.19A", "Dimensiones": "2382 x 1134 x 30 mm", "Peso": "32.5 kg" },
+    "features": ["Tecnologia N-Type bifacial", "Eficiencia superior 22.5%", "Baja degradacion anual", "Garantia 12 anos", "Certificaciones internacionales", "Certificado RETIE"],
+    "reference": "620W"
+  },
+  {
+    "id": "panel-astronergy-625w",
+    "category": "paneles",
+    "subcategory": "Tipo-N Bifaciales",
+    "name": "Panel Solar Astronergy 625W",
+    "brand": "Astronergy",
+    "specs": { "Potencia maxima": "625Wp", "Tipo celula": "Monocristalina n-type", "Eficiencia": "22.4%", "Voc": "56.01V", "Isc": "14.11A", "Vmpp": "46.29V", "Impp": "13.58A", "Dimensiones": "2465 x 1134 x 30 mm", "Peso": "34.7 kg" },
+    "features": ["Tecnologia N-Type bifacial", "Eficiencia superior 22.5%", "Baja degradacion anual", "Garantia 12 anos", "Certificado RETIE"],
+    "reference": "625W"
+  },
+  {
+    "id": "panel-runergy-630w",
+    "category": "paneles",
+    "subcategory": "Tipo-N Bifaciales",
+    "name": "Panel Solar Runergy 630W",
+    "brand": "Runergy",
+    "specs": { "Potencia maxima": "630Wp", "Tipo celula": "Mono N-Type", "Eficiencia": "23.3%", "Voc": "49.31V", "Isc": "15.96A", "Vmpp": "41.89V", "Impp": "15.04A", "Dimensiones": "2382 x 1134 x 30 mm", "Peso": "32.4 kg" },
+    "features": ["Tecnologia N-Type bifacial", "Eficiencia superior 22.5%", "Baja degradacion anual", "Garantia 12 anos", "Certificado RETIE"],
+    "reference": "630W"
+  },
+  {
+    "id": "breaker-bb1-1p",
+    "category": "protecciones",
+    "subcategory": "Breakers",
+    "name": "Breaker DC BB1-63 1P",
+    "brand": "ZBeny",
+    "specs": { "Polos": "1P", "Voltaje trabajo": "300 VDC", "Corriente max nominal": "16A - 63A", "Voltaje max nominal": "1,200 VDC", "Capacidad max rotura": "6KA" },
+    "features": ["Amplio rango de temperatura", "Modular y facil instalacion", "Proteccion eficaz sistemas fotovoltaicos", "Certificado RETIE"],
+    "reference": "1P 300VDC"
+  },
+  {
+    "id": "breaker-bb1-2p",
+    "category": "protecciones",
+    "subcategory": "Breakers",
+    "name": "Breaker DC BB1-63 2P",
+    "brand": "ZBeny",
+    "specs": { "Polos": "2P", "Voltaje trabajo": "600 VDC", "Corriente max nominal": "16A - 63A", "Voltaje max nominal": "1,200 VDC", "Capacidad max rotura": "6KA" },
+    "features": ["Amplio rango de temperatura", "Modular y facil instalacion", "Proteccion eficaz sistemas fotovoltaicos", "Certificado RETIE"],
+    "reference": "2P 600VDC"
+  },
+  {
+    "id": "dps-bud-40-2",
+    "category": "protecciones",
+    "subcategory": "DPS",
+    "name": "DPS BUD-40/2 Supresor de Picos",
+    "brand": "ZBeny",
+    "specs": { "Polos": "2P", "Voltaje trabajo": "600VDC", "Categoria": "IEC II / EN2", "Voltaje max Ucpv": "600VDC", "Corriente descarga nominal": "20KA", "Corriente max descarga": "40KA" },
+    "features": ["Proteccion contra sobretensiones", "Certificado RETIE", "Modular"],
+    "reference": "2P 600VDC"
+  },
+  {
+    "id": "dps-bud-40-3",
+    "category": "protecciones",
+    "subcategory": "DPS",
+    "name": "DPS BUD-40/3 Supresor de Picos",
+    "brand": "ZBeny",
+    "specs": { "Polos": "3P", "Voltaje trabajo": "1,000VDC", "Categoria": "IIEC II / EN2", "Voltaje max Ucpv": "1,000VDC", "Corriente descarga nominal": "20KA", "Corriente max descarga": "40KA" },
+    "features": ["Proteccion contra sobretensiones", "Certificado RETIE", "Modular"],
+    "reference": "3P 1000VDC"
+  },
+  {
+    "id": "estructura-riel-4700",
+    "category": "estructura",
+    "subcategory": "Rieles",
+    "name": "Riel 4.7 Metros",
+    "brand": "CoSostenible",
+    "specs": { "Especificacion": "L4800", "Peso": "2.66 kg", "Tamano caja": "4850x1140x1020 mm" },
+    "features": ["Para suelo y techo", "Aluminio anti-corrosion"],
+    "reference": "4.7m"
+  },
+  {
+    "id": "estructura-riel-2500",
+    "category": "estructura",
+    "subcategory": "Rieles",
+    "name": "Riel 2.5 Metros",
+    "brand": "CoSostenible",
+    "specs": { "Especificacion": "L2500", "Peso": "1.39 kg", "Tamano caja": "2250x1140x1020 mm" },
+    "features": ["Para suelo y techo", "Aluminio anti-corrosion"],
+    "reference": "2.5m"
+  },
+  {
+    "id": "estructura-end-clamp",
+    "category": "estructura",
+    "subcategory": "Accesorios Estructura",
+    "name": "End Clamp 30 Kit",
+    "brand": "CoSostenible",
+    "specs": { "Especificacion": "L50 mm", "Peso": "0.056 kg", "Material": "AL6005-T5" },
+    "features": ["Para suelo y techo", "Aluminio"],
+    "reference": "End Clamp"
+  },
+  {
+    "id": "estructura-mid-clamp",
+    "category": "estructura",
+    "subcategory": "Accesorios Estructura",
+    "name": "Mid Clamp 30 Kit",
+    "brand": "CoSostenible",
+    "specs": { "Especificacion": "L50 mm", "Peso": "0.063 kg", "Material": "AL6005-T5" },
+    "features": ["Para suelo y techo", "Aluminio"],
+    "reference": "Mid Clamp"
+  },
+  {
+    "id": "estructura-l-feet",
+    "category": "estructura",
+    "subcategory": "Accesorios Estructura",
+    "name": "L Feet Kit",
+    "brand": "CoSostenible",
+    "specs": { "Peso": "0.117 kg", "Material": "AL6005-T5" },
+    "features": ["Para techo", "Aluminio"],
+    "reference": "L Feet"
+  },
+  {
+    "id": "wifi-srne-shinner",
+    "category": "accesorios",
+    "subcategory": "Modulos WiFi",
+    "name": "Modulo WiFi SRNE Shinner",
+    "brand": "SRNE",
+    "specs": { "Tension entrada": "DC5 - 25V", "Grado proteccion": "IP43", "Comunicacion": "TTL", "WLAN": "802.11 a/b/g/n" },
+    "features": ["Compatible red WiFi 2.4G", "Plataforma monitoreo amigable", "Cable con alimentacion propia"],
+    "reference": "WiFi-1"
+  },
+  {
+    "id": "wifi-solax",
+    "category": "accesorios",
+    "subcategory": "Modulos WiFi",
+    "name": "Modulo WiFi SolaX Pocket V3.0-P",
+    "brand": "SolaX",
+    "specs": { "Alimentacion": "5V 200mA CC", "Grado proteccion": "IP65", "Modulo inalambrico": "WiFi 2.4GHz", "Ethernet": "3 dBi" },
+    "features": ["Compatible red WiFi 2.4G", "Plataforma monitoreo amigable"],
+    "reference": "Pocket WiFi"
+  }
+]

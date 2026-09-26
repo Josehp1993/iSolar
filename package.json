@@ -1,0 +1,12 @@
+{
+  "name": "isolar-web",
+  "version": "1.0.0",
+  "description": "iSolar Energias Renovables - Tienda de equipos solares",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
