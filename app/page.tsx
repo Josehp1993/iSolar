@@ -99,8 +99,8 @@ export default function HomePage() {
   }, []);
 
   function handleAddToCart(p: Producto) {
-    if (p.precio <= 0 || p.stock <= 0) return;
-    cart.addItem({ id: p.id, nombre: p.nombre, precio: Number(p.precio), stock: p.stock, imagen_url: p.imagen_url, marca: p.marca });
+    if (Number(p.precio) <= 0 || Number(p.stock) <= 0) return;
+    cart.addItem({ id: p.id, nombre: p.nombre, precio: Number(p.precio), stock: Number(p.stock), imagen_url: p.imagen_url, marca: p.marca });
     setToast(`${p.nombre} agregado al carrito`);
   }
 
@@ -225,7 +225,7 @@ export default function HomePage() {
                         ))}
                       </div>
                     )}
-                    {p.precio > 0 && (
+                    {Number(p.precio) > 0 && (
                       <p className="text-[16px] font-bold text-solar mb-3">{formatPrice(Number(p.precio))}</p>
                     )}
                     <div className="flex gap-2">
@@ -233,14 +233,14 @@ export default function HomePage() {
                         className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold bg-solar text-white hover:bg-solar-dark transition">
                         Cotizar
                       </button>
-                      {p.precio > 0 && p.stock > 0 && (
+                      {Number(p.precio) > 0 && Number(p.stock) > 0 && (
                         <button onClick={e => { e.stopPropagation(); handleAddToCart(p); }}
                           className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold text-navy border border-gray-200 hover:border-navy transition flex items-center justify-center gap-1">
                           <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 stroke-current fill-none" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
                           Agregar
                         </button>
                       )}
-                      {(p.precio <= 0 || p.stock <= 0) && (
+                      {(Number(p.precio) <= 0 || Number(p.stock) <= 0) && (
                         <button onClick={e => { e.stopPropagation(); setModal(p); }}
                           className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold text-navy border border-gray-200 hover:border-navy transition">
                           Ver detalles
@@ -412,7 +412,7 @@ export default function HomePage() {
                 className="flex-1 text-center py-[10px] px-5 rounded-lg font-semibold text-[14px] bg-solar text-white hover:bg-solar-dark transition">
                 Cotizar por WhatsApp
               </a>
-              {modal.precio > 0 && modal.stock > 0 ? (
+              {Number(modal.precio) > 0 && Number(modal.stock) > 0 ? (
                 <button onClick={() => { handleAddToCart(modal); setModal(null); }}
                   className="flex-1 text-center py-[10px] px-5 rounded-lg font-semibold text-[14px] text-navy border border-gray-200 hover:border-navy transition cursor-pointer flex items-center justify-center gap-2">
                   <svg viewBox="0 0 24 24" className="w-4 h-4 stroke-current fill-none" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>

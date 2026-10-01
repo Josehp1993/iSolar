@@ -10,7 +10,8 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       [id]
     );
     if (result.rows.length === 0) return NextResponse.json({ error: 'No encontrado' }, { status: 404 });
-    return NextResponse.json(result.rows[0]);
+    const r = result.rows[0];
+    return NextResponse.json({ ...r, precio: Number(r.precio), precio_oferta: r.precio_oferta != null ? Number(r.precio_oferta) : null, stock: Number(r.stock) });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Error' }, { status: 500 });

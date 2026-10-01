@@ -24,7 +24,13 @@ export async function GET(req: NextRequest) {
     sql += ' ORDER BY p.destacado DESC, p.created_at DESC';
 
     const result = await query(sql, params);
-    return NextResponse.json(result.rows);
+    const rows = result.rows.map((r: any) => ({
+      ...r,
+      precio: Number(r.precio),
+      precio_oferta: r.precio_oferta != null ? Number(r.precio_oferta) : null,
+      stock: Number(r.stock),
+    }));
+    return NextResponse.json(rows);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Error' }, { status: 500 });
