@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { useCart } from '@/lib/cart-context';
 
 function fmt(n: number) {
   return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(n);
@@ -9,21 +10,26 @@ function fmt(n: number) {
 
 export default function ProductoPage() {
   const { id } = useParams();
+  const { addItem, count } = useCart();
   const [producto, setProducto] = useState<any>(null);
   const [cantidad, setCantidad] = useState(1);
+  const [toast, setToast] = useState(false);
 
   useEffect(() => {
     fetch(`/api/productos/${id}`).then(r => r.json()).then(setProducto);
   }, [id]);
 
-  function addToCart() {
-    const cart = JSON.parse(localStorage.getItem('isolar_cart') || '[]');
-    const existing = cart.find((i: any) => i.id === producto.id);
-    if (existing) { existing.cantidad += cantidad; }
-    else { cart.push({ id: producto.id, nombre: producto.nombre, precio: Number(producto.precio), cantidad, stock: producto.stock }); }
-    localStorage.setItem('isolar_cart', JSON.stringify(cart));
-    window.dispatchEvent(new Event('cart-updated'));
-    alert('Producto agregado al carrito');
+  function handleAdd() {
+    addItem({
+      id: producto.id,
+      nombre: producto.nombre,
+      precio: Number(producto.precio),
+      stock: producto.stock,
+      imagen_url: producto.imagen_url,
+      marca: producto.marca,
+    }, cantidad);
+    setToast(true);
+    setTimeout(() => setToast(false), 2000);
   }
 
   if (!producto) return <div className="min-h-screen flex items-center justify-center text-gray-500">Cargando...</div>;
@@ -36,7 +42,12 @@ export default function ProductoPage() {
       <header className="bg-navy text-white sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="text-lg font-montserrat font-bold">iSolar</Link>
-          <Link href="/carrito" className="text-sm bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20">Carrito</Link>
+          <Link href="/carrito" className="text-sm bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 relative">
+            Carrito
+            {count > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-solar text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{count}</span>
+            )}
+          </Link>
         </div>
       </header>
 
@@ -44,6 +55,12 @@ export default function ProductoPage() {
         <Link href="/" className="text-navy text-sm hover:underline mb-6 inline-block">&larr; Volver al catalogo</Link>
 
         <div className="bg-white rounded-xl shadow p-6 md:p-8">
+          {producto.imagen_url && (
+            <div className="mb-6 flex justify-center">
+              <img src={producto.imagen_url} alt={producto.nombre} className="max-h-64 object-contain rounded" />
+            </div>
+          )}
+
           <div className="mb-2">
             <span className="text-xs text-gray-400 uppercase tracking-wide">{producto.marca}</span>
             {producto.referencia && <span className="text-xs text-gray-400 ml-2">Ref: {producto.referencia}</span>}
@@ -80,11 +97,11 @@ export default function ProductoPage() {
           {producto.precio > 0 && producto.stock > 0 && (
             <div className="flex items-center gap-4 mt-6 pt-6 border-t">
               <div className="flex items-center border rounded-lg">
-                <button onClick={() => setCantidad(Math.max(1, cantidad - 1))} className="px-3 py-2 text-lg">-</button>
+                <button onClick={() => setCantidad(Math.max(1, cantidad - 1))} className="px-3 py-2 text-lg hover:bg-gray-100">-</button>
                 <span className="px-3 py-2 min-w-[40px] text-center">{cantidad}</span>
-                <button onClick={() => setCantidad(Math.min(producto.stock, cantidad + 1))} className="px-3 py-2 text-lg">+</button>
+                <button onClick={() => setCantidad(Math.min(producto.stock, cantidad + 1))} className="px-3 py-2 text-lg hover:bg-gray-100">+</button>
               </div>
-              <button onClick={addToCart} className="bg-solar text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-solar-dark transition flex-1 md:flex-none">
+              <button onClick={handleAdd} className="bg-solar text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-solar-dark transition flex-1 md:flex-none">
                 Agregar al carrito
               </button>
               <span className="text-sm text-gray-400">{producto.stock} disponibles</span>
@@ -100,6 +117,12 @@ export default function ProductoPage() {
           </a>
         </div>
       </main>
+
+      {toast && (
+        <div className="fixed bottom-6 right-6 bg-navy text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium z-50 animate-[slideUp_0.3s_ease-out]">
+          Producto agregado al carrito
+        </div>
+      )}
     </div>
   );
 }

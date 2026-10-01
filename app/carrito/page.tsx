@@ -1,54 +1,41 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
+import { useCart } from '@/lib/cart-context';
 
 function fmt(n: number) {
   return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(n);
 }
 
-interface CartItem { id: number; nombre: string; precio: number; cantidad: number; stock: number }
-
 export default function CarritoPage() {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [form, setForm] = useState({ nombre: '', email: '', telefono: '', direccion: '' });
+  const { items, subtotal, iva, total, updateQty, removeItem, clear } = useCart();
+  const [form, setForm] = useState({ nombre: '', email: '', telefono: '', cedula: '', ciudad: '', direccion: '' });
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem('isolar_cart') || '[]');
-    setItems(cart);
-  }, []);
-
-  function save(updated: CartItem[]) {
-    setItems(updated);
-    localStorage.setItem('isolar_cart', JSON.stringify(updated));
-  }
-
-  function updateQty(id: number, qty: number) {
-    save(items.map(i => i.id === id ? { ...i, cantidad: Math.max(1, Math.min(i.stock, qty)) } : i));
-  }
-
-  function remove(id: number) {
-    save(items.filter(i => i.id !== id));
-  }
-
-  const subtotal = items.reduce((s, i) => s + i.precio * i.cantidad, 0);
-  const iva = Math.round(subtotal * 0.19);
-  const total = subtotal + iva;
+  const [error, setError] = useState('');
 
   async function checkout(e: React.FormEvent) {
     e.preventDefault();
     if (items.length === 0) return;
     setLoading(true);
+    setError('');
 
     try {
       const clienteRes = await fetch('/api/clientes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre: form.nombre, email: form.email, telefono: form.telefono, direccion: form.direccion }),
+        body: JSON.stringify({
+          nombre: form.nombre,
+          email: form.email,
+          telefono: form.telefono,
+          cedula: form.cedula,
+          ciudad: form.ciudad,
+          direccion: form.direccion,
+        }),
       });
       const cliente = await clienteRes.json();
 
       const referencia = `ISO-${Date.now()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+      const amountInCents = total * 100;
 
       const pedidoRes = await fetch('/api/pedidos', {
         method: 'POST',
@@ -59,7 +46,7 @@ export default function CarritoPage() {
           subtotal,
           iva,
           total,
-          direccion_envio: form.direccion,
+          direccion_envio: `${form.direccion}, ${form.ciudad}`,
           items: items.map(i => ({ producto_id: i.id, cantidad: i.cantidad, precio_unitario: i.precio })),
         }),
       });
@@ -68,27 +55,40 @@ export default function CarritoPage() {
 
       const pubKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY;
       if (pubKey) {
-        const integritySecret = process.env.NEXT_PUBLIC_WOMPI_INTEGRITY_KEY || '';
-        const amountInCents = total * 100;
-        const checkout = new (window as any).WidgetCheckout({
+        const hashRes = await fetch('/api/wompi/integrity', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference: referencia, amountInCents, currency: 'COP' }),
+        });
+        const { hash } = await hashRes.json();
+
+        const widgetCheckout = new (window as any).WidgetCheckout({
           currency: 'COP',
           amountInCents,
           reference: referencia,
           publicKey: pubKey,
+          integritySignature: hash,
+          customerData: {
+            email: form.email,
+            fullName: form.nombre,
+            phoneNumber: form.telefono,
+            legalId: form.cedula,
+            legalIdType: 'CC',
+          },
           redirectUrl: `${window.location.origin}/pedido/confirmacion?ref=${referencia}`,
         });
-        checkout.open((result: any) => {
+        widgetCheckout.open((result: any) => {
           if (result.transaction) {
-            localStorage.removeItem('isolar_cart');
+            clear();
             window.location.href = `/pedido/confirmacion?ref=${referencia}`;
           }
         });
       } else {
-        localStorage.removeItem('isolar_cart');
+        clear();
         window.location.href = `/pedido/confirmacion?ref=${referencia}`;
       }
-    } catch (err) {
-      alert('Error procesando el pedido');
+    } catch {
+      setError('Error procesando el pedido. Intenta de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -116,17 +116,21 @@ export default function CarritoPage() {
             <div className="md:col-span-2 space-y-3">
               {items.map(item => (
                 <div key={item.id} className="bg-white rounded-xl p-4 flex items-center gap-4">
+                  {item.imagen_url && (
+                    <img src={item.imagen_url} alt={item.nombre} className="w-16 h-16 object-contain rounded bg-gray-50 flex-shrink-0" />
+                  )}
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-navy truncate">{item.nombre}</p>
                     <p className="text-sm text-gray-500">{fmt(item.precio)} c/u</p>
+                    {item.marca && <p className="text-xs text-gray-400">{item.marca}</p>}
                   </div>
                   <div className="flex items-center border rounded-lg">
-                    <button onClick={() => updateQty(item.id, item.cantidad - 1)} className="px-2 py-1">-</button>
+                    <button onClick={() => updateQty(item.id, item.cantidad - 1)} className="px-2 py-1 hover:bg-gray-100">-</button>
                     <span className="px-2 min-w-[30px] text-center text-sm">{item.cantidad}</span>
-                    <button onClick={() => updateQty(item.id, item.cantidad + 1)} className="px-2 py-1">+</button>
+                    <button onClick={() => updateQty(item.id, item.cantidad + 1)} className="px-2 py-1 hover:bg-gray-100">+</button>
                   </div>
                   <p className="font-semibold w-28 text-right">{fmt(item.precio * item.cantidad)}</p>
-                  <button onClick={() => remove(item.id)} className="text-red-500 text-sm hover:underline">Quitar</button>
+                  <button onClick={() => removeItem(item.id)} className="text-red-500 text-sm hover:underline">Quitar</button>
                 </div>
               ))}
             </div>
@@ -139,12 +143,18 @@ export default function CarritoPage() {
                 <div className="flex justify-between font-bold text-lg border-t pt-2"><span>Total</span><span className="text-solar">{fmt(total)}</span></div>
               </div>
 
+              {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
+
               <form onSubmit={checkout} className="space-y-3">
                 <input required placeholder="Nombre completo" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })}
+                  className="w-full border rounded-lg px-3 py-2 text-sm" />
+                <input required placeholder="Cedula" value={form.cedula} onChange={e => setForm({ ...form, cedula: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2 text-sm" />
                 <input required type="email" placeholder="Email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2 text-sm" />
                 <input required placeholder="Telefono" value={form.telefono} onChange={e => setForm({ ...form, telefono: e.target.value })}
+                  className="w-full border rounded-lg px-3 py-2 text-sm" />
+                <input required placeholder="Ciudad" value={form.ciudad} onChange={e => setForm({ ...form, ciudad: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2 text-sm" />
                 <input required placeholder="Direccion de envio" value={form.direccion} onChange={e => setForm({ ...form, direccion: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2 text-sm" />
@@ -157,8 +167,6 @@ export default function CarritoPage() {
           </div>
         )}
       </main>
-
-      <script src="https://checkout.wompi.co/widget.js" async />
     </div>
   );
 }

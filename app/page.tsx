@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useCart } from '@/lib/cart-context';
 
 interface Producto {
   id: number;
@@ -14,6 +15,7 @@ interface Producto {
   specs: Record<string, string>;
   features: string[];
   stock: number;
+  imagen_url?: string;
 }
 
 interface Categoria {
@@ -50,6 +52,37 @@ function SpinningSun() {
   );
 }
 
+function CartIcon({ count }: { count: number }) {
+  return (
+    <Link href="/carrito" className="relative flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">
+      <svg viewBox="0 0 24 24" className="w-5 h-5 stroke-current fill-none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+      </svg>
+      <span className="hidden sm:inline">Carrito</span>
+      {count > 0 && (
+        <span className="absolute -top-0.5 -right-0.5 bg-solar text-white text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center">
+          {count > 99 ? '99+' : count}
+        </span>
+      )}
+    </Link>
+  );
+}
+
+function Toast({ message, onClose }: { message: string; onClose: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onClose, 2500);
+    return () => clearTimeout(t);
+  }, [onClose]);
+
+  return (
+    <div className="fixed bottom-6 right-6 z-[300] bg-navy text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-[slideUp_0.3s_ease]">
+      <svg viewBox="0 0 24 24" className="w-5 h-5 stroke-solar fill-none" strokeWidth="2"><path d="M20 6L9 17l-5-5"/></svg>
+      <span className="text-sm font-medium">{message}</span>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
@@ -57,11 +90,19 @@ export default function HomePage() {
   const [modal, setModal] = useState<Producto | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cargando, setCargando] = useState(true);
+  const [toast, setToast] = useState('');
+  const cart = useCart();
 
   useEffect(() => {
     fetch('/api/categorias').then(r => r.json()).then(setCategorias).catch(() => {});
     fetch('/api/productos').then(r => r.json()).then(d => { setProductos(d); setCargando(false); }).catch(() => setCargando(false));
   }, []);
+
+  function handleAddToCart(p: Producto) {
+    if (p.precio <= 0 || p.stock <= 0) return;
+    cart.addItem({ id: p.id, nombre: p.nombre, precio: Number(p.precio), stock: p.stock, imagen_url: p.imagen_url, marca: p.marca });
+    setToast(`${p.nombre} agregado al carrito`);
+  }
 
   const filtrados = productos.filter(p => p.categoria_slug === catActiva);
 
@@ -72,28 +113,40 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen font-montserrat" style={{ background: '#fafafa', color: '#2c3e50' }}>
-      {/* NAV - fondo blanco como el original */}
+      <style>{`@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+
+      {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-[1140px] mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#" onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center">
             <img src="/logo-isolar.jpg" alt="iSolar Energias Renovables" className="h-10 w-auto" />
           </a>
-          <ul className={`${menuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row absolute md:static top-16 left-0 right-0 bg-white md:bg-transparent border-b md:border-0 shadow-lg md:shadow-none p-4 md:p-0 gap-1 items-stretch md:items-center z-50`}>
-            <li><a href="#catalogo" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Catalogo</a></li>
-            <li><a href="#nosotros" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Nosotros</a></li>
-            <li><a href="#contacto" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Contacto</a></li>
-            <li>
-              <a href="https://wa.me/573001234567?text=Hola%2C%20quiero%20cotizar%20equipos%20solares" target="_blank" rel="noopener noreferrer"
-                className="block px-5 py-2 rounded-md text-sm font-semibold bg-solar text-white hover:bg-solar-dark transition md:ml-2 text-center">
-                Cotizar
-              </a>
-            </li>
-          </ul>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden flex flex-col gap-[5px] p-1.5">
-            <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
-            <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
-            <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
-          </button>
+          <div className="flex items-center gap-1">
+            <ul className={`${menuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row absolute md:static top-16 left-0 right-0 bg-white md:bg-transparent border-b md:border-0 shadow-lg md:shadow-none p-4 md:p-0 gap-1 items-stretch md:items-center z-50`}>
+              <li><a href="#catalogo" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Catalogo</a></li>
+              <li><a href="#nosotros" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Nosotros</a></li>
+              <li><a href="#contacto" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Contacto</a></li>
+              <li className="md:hidden">
+                <Link href="/carrito" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">
+                  Carrito {cart.count > 0 && `(${cart.count})`}
+                </Link>
+              </li>
+              <li>
+                <a href="https://wa.me/573001234567?text=Hola%2C%20quiero%20cotizar%20equipos%20solares" target="_blank" rel="noopener noreferrer"
+                  className="block px-5 py-2 rounded-md text-sm font-semibold bg-solar text-white hover:bg-solar-dark transition md:ml-2 text-center">
+                  Cotizar
+                </a>
+              </li>
+            </ul>
+            <div className="hidden md:block">
+              <CartIcon count={cart.count} />
+            </div>
+            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden flex flex-col gap-[5px] p-1.5">
+              <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
+              <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
+              <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -172,15 +225,27 @@ export default function HomePage() {
                         ))}
                       </div>
                     )}
+                    {p.precio > 0 && (
+                      <p className="text-[16px] font-bold text-solar mb-3">{formatPrice(Number(p.precio))}</p>
+                    )}
                     <div className="flex gap-2">
                       <button onClick={e => { e.stopPropagation(); window.open(`https://wa.me/573001234567?text=${encodeURIComponent('Hola, me interesa cotizar: ' + p.nombre)}`, '_blank'); }}
                         className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold bg-solar text-white hover:bg-solar-dark transition">
                         Cotizar
                       </button>
-                      <button onClick={e => { e.stopPropagation(); setModal(p); }}
-                        className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold text-navy border border-gray-200 hover:border-navy transition">
-                        Ver detalles
-                      </button>
+                      {p.precio > 0 && p.stock > 0 && (
+                        <button onClick={e => { e.stopPropagation(); handleAddToCart(p); }}
+                          className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold text-navy border border-gray-200 hover:border-navy transition flex items-center justify-center gap-1">
+                          <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 stroke-current fill-none" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                          Agregar
+                        </button>
+                      )}
+                      {(p.precio <= 0 || p.stock <= 0) && (
+                        <button onClick={e => { e.stopPropagation(); setModal(p); }}
+                          className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold text-navy border border-gray-200 hover:border-navy transition">
+                          Ver detalles
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
@@ -306,8 +371,12 @@ export default function HomePage() {
             </button>
             <div className="px-6 pt-6 pb-4 border-b border-gray-200">
               <span className="text-[11px] font-semibold uppercase tracking-wide text-accent bg-blue-50 px-2 py-0.5 rounded inline-block mb-2">{modal.marca}</span>
+              {modal.referencia && <span className="text-[11px] text-gray-400 ml-2">Ref: {modal.referencia}</span>}
               <h2 className="text-[20px] font-bold text-navy mb-1">{modal.nombre}</h2>
               <p className="text-[13px] text-gray-400">{modal.categoria_nombre}</p>
+              {modal.precio > 0 && (
+                <p className="text-[22px] font-bold text-solar mt-2">{formatPrice(Number(modal.precio))}</p>
+              )}
             </div>
             <div className="px-6 py-6">
               {Object.keys(modal.specs || {}).length > 0 && (
@@ -343,14 +412,25 @@ export default function HomePage() {
                 className="flex-1 text-center py-[10px] px-5 rounded-lg font-semibold text-[14px] bg-solar text-white hover:bg-solar-dark transition">
                 Cotizar por WhatsApp
               </a>
-              <button onClick={() => setModal(null)}
-                className="flex-1 text-center py-[10px] px-5 rounded-lg font-semibold text-[14px] text-navy border border-gray-200 hover:border-navy transition cursor-pointer">
-                Cerrar
-              </button>
+              {modal.precio > 0 && modal.stock > 0 ? (
+                <button onClick={() => { handleAddToCart(modal); setModal(null); }}
+                  className="flex-1 text-center py-[10px] px-5 rounded-lg font-semibold text-[14px] text-navy border border-gray-200 hover:border-navy transition cursor-pointer flex items-center justify-center gap-2">
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 stroke-current fill-none" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                  Agregar al carrito
+                </button>
+              ) : (
+                <button onClick={() => setModal(null)}
+                  className="flex-1 text-center py-[10px] px-5 rounded-lg font-semibold text-[14px] text-navy border border-gray-200 hover:border-navy transition cursor-pointer">
+                  Cerrar
+                </button>
+              )}
             </div>
           </div>
         </div>
       )}
+
+      {/* TOAST */}
+      {toast && <Toast message={toast} onClose={() => setToast('')} />}
     </div>
   );
 }
