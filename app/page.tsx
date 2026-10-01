@@ -9,10 +9,11 @@ interface Producto {
   referencia: string;
   precio: number;
   precio_oferta: number | null;
-  imagen_url: string;
   categoria_nombre: string;
   categoria_slug: string;
   specs: Record<string, string>;
+  features: string[];
+  stock: number;
 }
 
 interface Categoria {
@@ -21,191 +22,335 @@ interface Categoria {
   slug: string;
 }
 
-const CATEGORY_ICONS: Record<string, string> = {
-  paneles: '☀️',
-  inversores: '⚡',
-  controladores: '🔌',
-  'baterias-gel': '🔋',
-  'baterias-litio': '🔋',
-  protecciones: '🛡️',
-  estructura: '🏗️',
-  accesorios: '🔧',
-};
-
 function formatPrice(n: number) {
   return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(n);
+}
+
+function SpinningSun() {
+  return (
+    <div className="relative w-[280px] h-[280px] flex items-center justify-center">
+      <div className="absolute inset-[-40px] rounded-full animate-pulse" style={{ background: 'radial-gradient(circle, rgba(46,139,62,.15), transparent 70%)' }} />
+      <svg className="absolute inset-0 animate-[spin_30s_linear_infinite]" viewBox="0 0 280 280" fill="none">
+        <line x1="140" y1="10" x2="140" y2="50" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round"/>
+        <line x1="140" y1="230" x2="140" y2="270" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round"/>
+        <line x1="10" y1="140" x2="50" y2="140" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round"/>
+        <line x1="230" y1="140" x2="270" y2="140" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round"/>
+        <line x1="48" y1="48" x2="76" y2="76" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round"/>
+        <line x1="204" y1="204" x2="232" y2="232" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round"/>
+        <line x1="48" y1="232" x2="76" y2="204" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round"/>
+        <line x1="204" y1="76" x2="232" y2="48" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round"/>
+      </svg>
+      <svg className="relative z-10 w-[120px] h-[120px]" viewBox="0 0 120 120" fill="none">
+        <circle cx="60" cy="60" r="45" stroke="#2E8B3E" strokeWidth="3"/>
+        <circle cx="60" cy="60" r="30" stroke="#2E8B3E" strokeWidth="2.5"/>
+        <circle cx="60" cy="60" r="17" stroke="#2E8B3E" strokeWidth="2"/>
+        <circle cx="60" cy="60" r="7" fill="#2E8B3E"/>
+      </svg>
+    </div>
+  );
 }
 
 export default function HomePage() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [catActiva, setCatActiva] = useState('');
-  const [busqueda, setBusqueda] = useState('');
+  const [catActiva, setCatActiva] = useState('paneles');
+  const [modal, setModal] = useState<Producto | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     fetch('/api/categorias').then(r => r.json()).then(setCategorias).catch(() => {});
-    cargarProductos('');
+    fetch('/api/productos').then(r => r.json()).then(d => { setProductos(d); setCargando(false); }).catch(() => setCargando(false));
   }, []);
 
-  async function cargarProductos(cat: string) {
-    setCargando(true);
-    const url = cat ? `/api/productos?categoria=${cat}` : '/api/productos';
-    const res = await fetch(url);
-    const data = await res.json();
-    setProductos(data);
-    setCargando(false);
-  }
+  const filtrados = productos.filter(p => p.categoria_slug === catActiva);
 
-  function seleccionarCat(slug: string) {
-    const nueva = catActiva === slug ? '' : slug;
-    setCatActiva(nueva);
-    cargarProductos(nueva);
-  }
-
-  const filtrados = busqueda
-    ? productos.filter(p => p.nombre.toLowerCase().includes(busqueda.toLowerCase()) || p.marca?.toLowerCase().includes(busqueda.toLowerCase()))
-    : productos;
+  const catCounts = productos.reduce((acc, p) => {
+    acc[p.categoria_slug] = (acc[p.categoria_slug] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
   return (
-    <div className="min-h-screen">
-      {/* NAV */}
-      <nav className="bg-navy text-white sticky top-0 z-50 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-navy font-extrabold text-sm">iS</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold leading-tight">iSolar</h1>
-              <p className="text-xs text-blue-200">Energias Renovables</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <a href="https://wa.me/573000000000" target="_blank" rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 bg-solar hover:bg-solar-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition">
-              WhatsApp
-            </a>
-            <Link href="/admin" className="text-blue-200 hover:text-white text-sm">
-              Admin
-            </Link>
-          </div>
+    <div className="min-h-screen font-montserrat" style={{ background: '#fafafa', color: '#2c3e50' }}>
+      {/* NAV - fondo blanco como el original */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-[1140px] mx-auto px-6 h-16 flex items-center justify-between">
+          <a href="#" onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center">
+            <img src="/logo-isolar.jpg" alt="iSolar Energias Renovables" className="h-10 w-auto" />
+          </a>
+          <ul className={`${menuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row absolute md:static top-16 left-0 right-0 bg-white md:bg-transparent border-b md:border-0 shadow-lg md:shadow-none p-4 md:p-0 gap-1 items-stretch md:items-center z-50`}>
+            <li><a href="#catalogo" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Catalogo</a></li>
+            <li><a href="#nosotros" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Nosotros</a></li>
+            <li><a href="#contacto" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-navy hover:bg-gray-100 transition">Contacto</a></li>
+            <li>
+              <a href="https://wa.me/573001234567?text=Hola%2C%20quiero%20cotizar%20equipos%20solares" target="_blank" rel="noopener noreferrer"
+                className="block px-5 py-2 rounded-md text-sm font-semibold bg-solar text-white hover:bg-solar-dark transition md:ml-2 text-center">
+                Cotizar
+              </a>
+            </li>
+          </ul>
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden flex flex-col gap-[5px] p-1.5">
+            <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
+            <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
+            <span className="block w-[22px] h-[2px] bg-gray-800 rounded" />
+          </button>
         </div>
       </nav>
 
       {/* HERO */}
-      <section className="bg-gradient-to-br from-navy via-navy-dark to-navy text-white py-16 px-4">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-5xl font-extrabold mb-4">Energia Solar para Colombia</h2>
-          <p className="text-lg text-blue-200 mb-8 max-w-2xl mx-auto">
-            Equipos de energia solar de alta calidad. Paneles, inversores, baterias, controladores y todo lo que necesitas para tu proyecto solar.
-          </p>
-          <a href="#catalogo" className="inline-block bg-solar hover:bg-solar-dark text-white px-8 py-3 rounded-lg font-semibold text-lg transition">
-            Ver Catalogo
-          </a>
+      <section className="bg-navy pt-28 pb-20 px-6 relative overflow-hidden">
+        <div className="max-w-[1140px] mx-auto grid md:grid-cols-2 gap-12 items-center relative z-10">
+          <div>
+            <h1 className="text-white font-bold leading-tight mb-5" style={{ fontSize: 'clamp(30px, 4.5vw, 48px)', letterSpacing: '-0.5px' }}>
+              Equipos de energia solar para cada proyecto
+            </h1>
+            <p className="text-white/65 text-[17px] leading-relaxed mb-8 max-w-[500px]">
+              Paneles, inversores, baterias, controladores y accesorios con certificacion RETIE. Asesoria tecnica y envio a todo Colombia.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a href="#catalogo" className="inline-flex items-center gap-1.5 px-6 py-3 rounded-lg font-semibold text-sm bg-solar text-white hover:bg-solar-dark transition">
+                Ver catalogo
+              </a>
+              <a href="https://wa.me/573001234567?text=Hola%2C%20necesito%20asesoria%20para%20un%20sistema%20solar" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-6 py-3 rounded-lg font-semibold text-sm text-white border border-white/25 hover:border-white/50 transition">
+                Solicitar asesoria
+              </a>
+            </div>
+          </div>
+          <div className="hidden md:flex justify-center items-center">
+            <SpinningSun />
+          </div>
         </div>
       </section>
 
       {/* CATALOGO */}
-      <section id="catalogo" className="max-w-7xl mx-auto px-4 py-12">
-        <h3 className="text-2xl font-bold text-navy mb-6">Nuestros Productos</h3>
+      <section id="catalogo" className="scroll-mt-[72px] py-16 px-6">
+        <div className="max-w-[1140px] mx-auto">
+          <div className="mb-10">
+            <h2 className="text-[28px] font-bold text-navy mb-1.5">Catalogo de productos</h2>
+            <p className="text-gray-500 text-[15px]">Selecciona una categoria para explorar los equipos disponibles</p>
+          </div>
 
-        {/* Busqueda */}
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            value={busqueda}
-            onChange={e => setBusqueda(e.target.value)}
-            className="w-full sm:w-96 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-transparent outline-none"
-          />
-        </div>
+          {/* Tabs */}
+          <div className="flex flex-wrap gap-1.5 mb-8 pb-4 border-b border-gray-200">
+            {categorias.map(c => (
+              <button key={c.slug} onClick={() => setCatActiva(c.slug)}
+                className={`px-5 py-2 rounded-md text-[13px] font-semibold transition ${
+                  catActiva === c.slug
+                    ? 'bg-navy text-white'
+                    : 'text-gray-500 hover:text-navy hover:bg-gray-100'
+                }`}>
+                {c.nombre}
+                <span className="ml-1 text-[11px] font-medium opacity-70">({catCounts[c.slug] || 0})</span>
+              </button>
+            ))}
+          </div>
 
-        {/* Categorias */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          <button
-            onClick={() => seleccionarCat('')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-              catActiva === '' ? 'bg-navy text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            Todos
-          </button>
-          {categorias.map(c => (
-            <button
-              key={c.slug}
-              onClick={() => seleccionarCat(c.slug)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                catActiva === c.slug ? 'bg-navy text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {CATEGORY_ICONS[c.slug] || '📦'} {c.nombre}
-            </button>
-          ))}
-        </div>
-
-        {/* Grid de productos */}
-        {cargando ? (
-          <div className="text-center py-12 text-gray-500">Cargando productos...</div>
-        ) : filtrados.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">No se encontraron productos</div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filtrados.map(p => (
-              <div key={p.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition group">
-                <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
-                  {p.imagen_url ? (
-                    <img src={p.imagen_url} alt={p.nombre} className="max-h-full object-contain" />
-                  ) : (
-                    <div className="text-6xl opacity-20">{CATEGORY_ICONS[p.categoria_slug] || '📦'}</div>
-                  )}
-                </div>
-                <div className="p-4">
-                  <p className="text-xs text-accent font-medium mb-1">{p.categoria_nombre}</p>
-                  <h4 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-2">{p.nombre}</h4>
-                  {p.marca && <p className="text-xs text-gray-500 mb-2">{p.marca} {p.referencia && `- ${p.referencia}`}</p>}
-                  {p.precio > 0 && (
-                    <div className="flex items-baseline gap-2">
-                      {p.precio_oferta ? (
-                        <>
-                          <span className="text-lg font-bold text-solar">{formatPrice(p.precio_oferta)}</span>
-                          <span className="text-sm text-gray-400 line-through">{formatPrice(p.precio)}</span>
-                        </>
-                      ) : (
-                        <span className="text-lg font-bold text-navy">{formatPrice(p.precio)}</span>
-                      )}
+          {/* Products grid */}
+          {cargando ? (
+            <p className="text-center py-12 text-gray-400 text-[15px]">Cargando productos...</p>
+          ) : filtrados.length === 0 ? (
+            <p className="text-center py-12 text-gray-400 text-[15px]">No hay productos en esta categoria.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filtrados.map(p => {
+                const specs = Object.entries(p.specs || {}).slice(0, 3);
+                return (
+                  <div key={p.id} onClick={() => setModal(p)}
+                    className="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer transition hover:border-solar hover:shadow-md">
+                    <div className="flex justify-between items-start mb-2.5">
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-accent bg-blue-50 px-2 py-0.5 rounded">
+                        {p.marca}
+                      </span>
+                      <span className="text-[11px] text-gray-400 font-medium">{p.categoria_nombre}</span>
                     </div>
-                  )}
-                  {Object.keys(p.specs || {}).length > 0 && (
-                    <div className="mt-2 space-y-0.5">
-                      {Object.entries(p.specs).slice(0, 3).map(([k, v]) => (
-                        <p key={k} className="text-xs text-gray-500"><span className="font-medium">{k}:</span> {v}</p>
-                      ))}
+                    <h3 className="text-[15px] font-semibold text-navy mb-2.5 leading-snug">{p.nombre}</h3>
+                    {specs.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mb-3.5">
+                        {specs.map(([, v]) => (
+                          <span key={v} className="text-[12px] px-2 py-0.5 bg-gray-100 rounded text-gray-500 font-medium">{v}</span>
+                        ))}
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <button onClick={e => { e.stopPropagation(); window.open(`https://wa.me/573001234567?text=${encodeURIComponent('Hola, me interesa cotizar: ' + p.nombre)}`, '_blank'); }}
+                        className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold bg-solar text-white hover:bg-solar-dark transition">
+                        Cotizar
+                      </button>
+                      <button onClick={e => { e.stopPropagation(); setModal(p); }}
+                        className="flex-1 text-center py-[7px] px-3.5 rounded-md text-[13px] font-semibold text-navy border border-gray-200 hover:border-navy transition">
+                        Ver detalles
+                      </button>
                     </div>
-                  )}
-                  <a
-                    href={`https://wa.me/573000000000?text=Hola, me interesa el producto: ${p.nombre}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 block w-full text-center bg-solar hover:bg-solar-dark text-white py-2 rounded-lg text-sm font-medium transition"
-                  >
-                    Cotizar por WhatsApp
-                  </a>
-                </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* POR QUE iSOLAR */}
+      <section id="nosotros" className="scroll-mt-[72px] bg-white border-t border-b border-gray-200 py-16 px-6">
+        <div className="max-w-[1140px] mx-auto">
+          <h2 className="text-[24px] font-bold text-navy mb-8">Por que trabajar con iSolar</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { title: 'Certificacion RETIE', desc: 'Productos certificados para sistemas fotovoltaicos conectados a red en Colombia.' },
+              { title: 'Garantia de fabrica', desc: 'Hasta 12 anos en paneles solares y 10 anos en inversores on grid.' },
+              { title: 'Asesoria tecnica', desc: 'Dimensionamiento gratuito de tu sistema solar. Te ayudamos a elegir los equipos correctos.' },
+              { title: 'Envio nacional', desc: 'Despacho a todo Colombia con empaque protector especializado para equipos solares.' },
+            ].map(item => (
+              <div key={item.title}>
+                <div className="w-8 h-[3px] bg-solar rounded mb-3.5" />
+                <h3 className="text-[15px] font-semibold text-navy mb-1.5">{item.title}</h3>
+                <p className="text-[14px] text-gray-500 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
-        )}
+        </div>
+      </section>
+
+      {/* MARCAS */}
+      <section className="py-12 px-6 text-center">
+        <div className="max-w-[1140px] mx-auto">
+          <h3 className="text-[13px] font-semibold uppercase tracking-[1.5px] text-gray-400 mb-5">Marcas que distribuimos</h3>
+          <div className="flex flex-wrap justify-center gap-x-9 gap-y-3">
+            {['TW Solar', 'Astronergy', 'Runergy', 'SolaX', 'SAJ', 'SRNE', 'Belttt', 'GreenPoint', 'ZBeny', 'CoSostenible'].map(m => (
+              <span key={m} className="text-[15px] font-semibold text-gray-500 tracking-wide">{m}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACTO */}
+      <section id="contacto" className="scroll-mt-[72px] bg-white py-16 px-6">
+        <div className="max-w-[1140px] mx-auto grid md:grid-cols-2 gap-12">
+          <div>
+            <h2 className="text-[28px] font-bold text-navy mb-3">Solicita tu cotizacion</h2>
+            <p className="text-gray-500 text-[15px] leading-relaxed mb-7">
+              Cuentanos sobre tu proyecto y te enviamos una propuesta personalizada con los equipos ideales para tu instalacion.
+            </p>
+            <div className="space-y-3.5">
+              {[
+                { icon: 'M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z', text: 'WhatsApp: +57 300 123 4567' },
+                { icon: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6', text: 'ventas@isolar.com.co' },
+                { icon: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0zM12 10m-3 0a3 3 0 106 0 3 3 0 00-6 0', text: 'Colombia' },
+              ].map(item => (
+                <div key={item.text} className="flex items-center gap-3 text-[14px]">
+                  <div className="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 stroke-navy fill-none" strokeWidth="2"><path d={item.icon} /></svg>
+                  </div>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <form onSubmit={e => { e.preventDefault(); const btn = e.currentTarget.querySelector('button') as HTMLButtonElement; btn.textContent = 'Enviado'; setTimeout(() => { btn.textContent = 'Enviar solicitud'; (e.target as HTMLFormElement).reset(); }, 3000); }}
+            className="border border-gray-200 rounded-lg p-7" style={{ background: '#fafafa' }}>
+            <div className="mb-4">
+              <label className="block text-[13px] font-semibold text-navy mb-1">Nombre</label>
+              <input type="text" required placeholder="Tu nombre" className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-[14px] bg-white focus:border-solar outline-none transition" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-[13px] font-semibold text-navy mb-1">Telefono / WhatsApp</label>
+              <input type="tel" required placeholder="+57 ..." className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-[14px] bg-white focus:border-solar outline-none transition" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-[13px] font-semibold text-navy mb-1">Email</label>
+              <input type="email" placeholder="tu@email.com" className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-[14px] bg-white focus:border-solar outline-none transition" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-[13px] font-semibold text-navy mb-1">Tipo de proyecto</label>
+              <select className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-[14px] bg-white focus:border-solar outline-none transition">
+                <option value="">Selecciona...</option>
+                <option>Residencial</option>
+                <option>Comercial</option>
+                <option>Industrial</option>
+                <option>Rural / Off Grid</option>
+                <option>On Grid / Inyeccion a red</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label className="block text-[13px] font-semibold text-navy mb-1">Mensaje</label>
+              <textarea placeholder="Describe tu proyecto o los equipos que necesitas..." rows={3}
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-[14px] bg-white focus:border-solar outline-none transition resize-y" />
+            </div>
+            <button type="submit" className="w-full py-3 rounded-lg font-semibold text-[14px] bg-solar text-white hover:bg-solar-dark transition">
+              Enviar solicitud
+            </button>
+          </form>
+        </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-navy-dark text-white py-8 px-4 mt-12">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="font-bold text-lg mb-2">iSolar - Energias Renovables</p>
-          <p className="text-blue-200 text-sm">Colombia</p>
-          <p className="text-blue-300 text-xs mt-4">Desarrollado por RedNode Tech Consulting SAS</p>
+      <footer className="bg-navy-dark py-9 px-6">
+        <div className="max-w-[1140px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <span className="text-[14px] font-semibold text-white/80">iSolar Energias Renovables</span>
+          <ul className="flex gap-5">
+            {['Catalogo', 'Nosotros', 'Contacto'].map(l => (
+              <li key={l}><a href={`#${l.toLowerCase()}`} className="text-[13px] text-white/50 hover:text-white/90 transition">{l}</a></li>
+            ))}
+          </ul>
+          <span className="text-[13px] text-white/40">2024 iSolar. Todos los derechos reservados.</span>
         </div>
       </footer>
+
+      {/* MODAL DETALLE */}
+      {modal && (
+        <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-6" onClick={() => setModal(null)}>
+          <div className="bg-white rounded-xl max-w-[640px] w-full max-h-[85vh] overflow-y-auto relative" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setModal(null)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition text-[16px]">
+              x
+            </button>
+            <div className="px-6 pt-6 pb-4 border-b border-gray-200">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-accent bg-blue-50 px-2 py-0.5 rounded inline-block mb-2">{modal.marca}</span>
+              <h2 className="text-[20px] font-bold text-navy mb-1">{modal.nombre}</h2>
+              <p className="text-[13px] text-gray-400">{modal.categoria_nombre}</p>
+            </div>
+            <div className="px-6 py-6">
+              {Object.keys(modal.specs || {}).length > 0 && (
+                <>
+                  <h3 className="text-[12px] font-semibold uppercase tracking-wider text-gray-400 mb-3">Especificaciones</h3>
+                  <table className="w-full mb-6">
+                    <tbody>
+                      {Object.entries(modal.specs).map(([k, v]) => (
+                        <tr key={k} className="border-b border-gray-100">
+                          <td className="py-2 text-[14px] font-semibold text-navy w-[45%] pr-4">{k}</td>
+                          <td className="py-2 text-[14px]">{v}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              )}
+              {(modal.features || []).length > 0 && (
+                <>
+                  <h3 className="text-[12px] font-semibold uppercase tracking-wider text-gray-400 mb-3">Caracteristicas</h3>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {modal.features.map((f, i) => (
+                      <li key={i} className="text-[14px] pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[8px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-solar">
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl flex flex-col sm:flex-row gap-2.5">
+              <a href={`https://wa.me/573001234567?text=${encodeURIComponent('Hola, me interesa cotizar: ' + modal.nombre)}`} target="_blank" rel="noopener noreferrer"
+                className="flex-1 text-center py-[10px] px-5 rounded-lg font-semibold text-[14px] bg-solar text-white hover:bg-solar-dark transition">
+                Cotizar por WhatsApp
+              </a>
+              <button onClick={() => setModal(null)}
+                className="flex-1 text-center py-[10px] px-5 rounded-lg font-semibold text-[14px] text-navy border border-gray-200 hover:border-navy transition cursor-pointer">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

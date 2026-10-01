@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS pedido_items (
 
 -- Seed admin user (password: admin123)
 INSERT INTO usuarios (nombre, email, password_hash, rol)
-VALUES ('Administrador', 'admin@isolar.com.co', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'superadmin')
+VALUES ('Administrador', 'admin@isolar.com.co', '$2a$10$gqt.D0U6JejcGqn4.J3J4.o0pj5HPO6KdI5dPx3.cwG8WwvXgNLJO', 'superadmin')
 ON CONFLICT (email) DO NOTHING;
 
 -- Seed categories
