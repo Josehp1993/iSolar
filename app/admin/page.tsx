@@ -74,7 +74,7 @@ function DashboardTab() {
 
       <div className="grid lg:grid-cols-3 gap-4">
         <div className="bg-white rounded-lg border border-gray-100 p-4 lg:col-span-2">
-          <h3 className="text-sm font-semibold text-navy mb-3">Pipeline de negociaciones</h3>
+          <h3 className="text-sm font-semibold text-navy mb-3">Flujo de negociaciones</h3>
           <div className="space-y-2">
             {(data.pipeline || []).map((p: any) => {
               const max = Math.max(...(data.pipeline || []).map((x: any) => Number(x.count)), 1);
@@ -601,6 +601,7 @@ export default function AdminPage() {
   const [tab, setTab] = useState<Tab>('dashboard');
   const [user, setUser] = useState<User | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -629,8 +630,12 @@ export default function AdminPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d={sidebarOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} />
               </svg>
             </button>
+            <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="hidden lg:block p-1.5">
+              <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
             <img src="/logo-isolar.jpg" alt="iSolar" className="h-8 w-auto" />
-            <span className="text-sm font-semibold text-navy hidden sm:inline">CRM</span>
           </div>
           <div className="flex items-center gap-3">
             <a href="/" target="_blank" className="text-xs text-gray-400 hover:text-navy transition hidden sm:inline">Ver sitio web</a>
@@ -645,30 +650,35 @@ export default function AdminPage() {
       {sidebarOpen && <div className="fixed inset-0 bg-black/30 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />}
 
       {/* Sidebar */}
-      <aside className={`fixed top-14 bottom-0 left-0 z-30 w-56 bg-white border-r border-gray-200 transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+      <aside className={`fixed top-14 bottom-0 left-0 z-30 bg-white border-r border-gray-200 transition-all duration-200
+        ${sidebarOpen ? 'translate-x-0 w-56' : '-translate-x-full w-56'}
+        lg:translate-x-0 ${sidebarCollapsed ? 'lg:w-16' : 'lg:w-56'}`}>
         <nav className="p-3 space-y-0.5">
           {sidebarItems.map(item => (
             <button key={item.key} onClick={() => { setTab(item.key); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium transition ${
-                tab === item.key ? 'bg-navy text-white' : 'text-gray-500 hover:text-navy hover:bg-gray-50'
-              }`}>
+              title={sidebarCollapsed ? item.label : undefined}
+              className={`w-full flex items-center gap-2.5 rounded-md text-sm font-medium transition
+                ${sidebarCollapsed ? 'lg:justify-center lg:px-0 px-3' : 'px-3'} py-2
+                ${tab === item.key ? 'bg-navy text-white' : 'text-gray-500 hover:text-navy hover:bg-gray-50'}`}>
               <svg className="w-[18px] h-[18px] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d={item.icon} />
               </svg>
-              {item.label}
+              <span className={sidebarCollapsed ? 'lg:hidden' : ''}>{item.label}</span>
             </button>
           ))}
         </nav>
         <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-100">
-          <a href="/" target="_blank" className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-gray-400 hover:text-navy hover:bg-gray-50 transition">
-            <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-            Ver sitio web
+          <a href="/" target="_blank" title={sidebarCollapsed ? 'Ver sitio web' : undefined}
+            className={`flex items-center gap-2 py-2 rounded-md text-sm text-gray-400 hover:text-navy hover:bg-gray-50 transition
+              ${sidebarCollapsed ? 'lg:justify-center lg:px-0 px-3' : 'px-3'}`}>
+            <svg className="w-[18px] h-[18px] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+            <span className={sidebarCollapsed ? 'lg:hidden' : ''}>Ver sitio web</span>
           </a>
         </div>
       </aside>
 
       {/* Main content */}
-      <main className="pt-14 lg:pl-56">
+      <main className={`pt-14 transition-all duration-200 ${sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-56'}`}>
         <div className="p-4 lg:p-6 max-w-[1200px]">
           <h2 className="text-lg font-bold text-navy mb-4">
             {sidebarItems.find(i => i.key === tab)?.label}
