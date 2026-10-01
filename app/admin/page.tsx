@@ -285,9 +285,13 @@ function ProductosTab() {
   const [search, setSearch] = useState('');
   const [editing, setEditing] = useState<any>(null);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ nombre: '', categoria_id: '', precio: '', stock: '', referencia: '', descripcion: '', marca: '' });
+  const [form, setForm] = useState<any>({ nombre: '', categoria_id: '', precio: '', precio_oferta: '', stock: '', referencia: '', descripcion: '', marca: '', destacado: false, imagen_url: '', imagenes: [] as string[] });
   const [categorias, setCategorias] = useState<any[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
   const perPage = 25;
+
+  const emptyForm = { nombre: '', categoria_id: '', precio: '', precio_oferta: '', stock: '', referencia: '', descripcion: '', marca: '', destacado: false, imagen_url: '', imagenes: [] as string[] };
 
   const load = useCallback(() => {
     let url = `/api/productos?limit=${perPage}&offset=${(page - 1) * perPage}`;
@@ -302,18 +306,23 @@ function ProductosTab() {
 
   async function guardar(e: React.FormEvent) {
     e.preventDefault();
+    const slug = form.nombre.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+    const payload = { ...form, slug, imagen_url: form.imagenes?.[0] || form.imagen_url || '' };
     if (editing) {
-      await fetch(`/api/productos/${editing.id}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(form) });
+      await fetch(`/api/productos/${editing.id}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
     } else {
-      await fetch('/api/productos', { method: 'POST', headers: authHeaders(), body: JSON.stringify(form) });
+      await fetch('/api/productos', { method: 'POST', headers: authHeaders(), body: JSON.stringify(payload) });
     }
-    setShowForm(false); setEditing(null);
-    setForm({ nombre: '', categoria_id: '', precio: '', stock: '', referencia: '', descripcion: '', marca: '' });
-    load();
+    setShowForm(false); setEditing(null); setForm(emptyForm); load();
   }
 
   function editar(p: any) {
-    setForm({ nombre: p.nombre, categoria_id: p.categoria_id || '', precio: p.precio || '', stock: p.stock || '', referencia: p.referencia || '', descripcion: p.descripcion || '', marca: p.marca || '' });
+    setForm({
+      nombre: p.nombre || '', categoria_id: p.categoria_id || '', precio: p.precio || '', precio_oferta: p.precio_oferta || '',
+      stock: p.stock || '', referencia: p.referencia || '', descripcion: p.descripcion || '', marca: p.marca || '',
+      destacado: p.destacado || false, imagen_url: p.imagen_url || '',
+      imagenes: Array.isArray(p.imagenes) ? [...p.imagenes] : (p.imagen_url ? [p.imagen_url] : [])
+    });
     setEditing(p); setShowForm(true);
   }
 
@@ -323,30 +332,160 @@ function ProductosTab() {
     load();
   }
 
+  async function uploadImages(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    const fd = new FormData();
+    for (let i = 0; i < files.length; i++) fd.append('files', files[i]);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (data.urls) setForm((prev: any) => ({ ...prev, imagenes: [...(prev.imagenes || []), ...data.urls] }));
+    } catch { }
+    setUploading(false);
+    e.target.value = '';
+  }
+
+  function removeImage(idx: number) {
+    setForm((prev: any) => ({ ...prev, imagenes: prev.imagenes.filter((_: any, i: number) => i !== idx) }));
+  }
+
+  function moveImage(from: number, to: number) {
+    if (to < 0 || to >= (form.imagenes?.length || 0)) return;
+    setForm((prev: any) => {
+      const imgs = [...prev.imagenes];
+      const [moved] = imgs.splice(from, 1);
+      imgs.splice(to, 0, moved);
+      return { ...prev, imagenes: imgs };
+    });
+  }
+
+  function handleDragStart(idx: number) { setDragIdx(idx); }
+  function handleDragOver(e: React.DragEvent, idx: number) {
+    e.preventDefault();
+    if (dragIdx !== null && dragIdx !== idx) { moveImage(dragIdx, idx); setDragIdx(idx); }
+  }
+  function handleDragEnd() { setDragIdx(null); }
+
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Buscar productos..."
           className="border border-gray-200 rounded-md px-3 py-2 text-sm flex-1 min-w-[180px]" />
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); setForm({ nombre: '', categoria_id: '', precio: '', stock: '', referencia: '', descripcion: '', marca: '' }); }}
+        <button onClick={() => { setShowForm(!showForm); setEditing(null); setForm(emptyForm); }}
           className="bg-navy text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-navy-dark transition">
           {showForm && !editing ? 'Cancelar' : 'Nuevo'}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={guardar} className="bg-white rounded-lg border border-gray-100 p-4 mb-4 grid sm:grid-cols-2 gap-2.5">
-          <input required placeholder="Nombre" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-          <select value={form.categoria_id} onChange={e => setForm({ ...form, categoria_id: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm">
-            <option value="">Categoria</option>
-            {categorias.map((c: any) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
-          </select>
-          <input placeholder="Marca" value={form.marca} onChange={e => setForm({ ...form, marca: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-          <input placeholder="Referencia" value={form.referencia} onChange={e => setForm({ ...form, referencia: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-          <input type="number" placeholder="Precio" value={form.precio} onChange={e => setForm({ ...form, precio: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-          <input type="number" placeholder="Stock" value={form.stock} onChange={e => setForm({ ...form, stock: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-          <textarea placeholder="Descripcion" value={form.descripcion} onChange={e => setForm({ ...form, descripcion: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm sm:col-span-2" rows={2} />
-          <button type="submit" className="bg-solar text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-solar-dark sm:col-span-2">{editing ? 'Actualizar' : 'Crear'}</button>
+        <form onSubmit={guardar} className="bg-white rounded-lg border border-gray-100 p-5 mb-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+            <div className="sm:col-span-2 lg:col-span-3">
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Nombre</label>
+              <input required value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" />
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Categoria</label>
+              <select value={form.categoria_id} onChange={e => setForm({ ...form, categoria_id: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none">
+                <option value="">Seleccionar</option>
+                {categorias.map((c: any) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Marca</label>
+              <input value={form.marca} onChange={e => setForm({ ...form, marca: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" />
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Referencia</label>
+              <input value={form.referencia} onChange={e => setForm({ ...form, referencia: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" />
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Precio</label>
+              <input type="number" value={form.precio} onChange={e => setForm({ ...form, precio: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" />
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Precio oferta</label>
+              <input type="number" value={form.precio_oferta} onChange={e => setForm({ ...form, precio_oferta: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" />
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Stock</label>
+              <input type="number" value={form.stock} onChange={e => setForm({ ...form, stock: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" />
+            </div>
+            <div className="sm:col-span-2 lg:col-span-3">
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Descripcion</label>
+              <textarea value={form.descripcion} onChange={e => setForm({ ...form, descripcion: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" rows={3} />
+            </div>
+            <div className="sm:col-span-2 lg:col-span-3 flex items-center gap-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={form.destacado} onChange={e => setForm({ ...form, destacado: e.target.checked })}
+                  className="rounded border-gray-300 text-navy focus:ring-navy" />
+                <span className="text-sm text-gray-600">Producto destacado</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Image manager */}
+          <div className="border-t border-gray-100 pt-4">
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-[11px] text-gray-400 uppercase tracking-wide font-medium">Imagenes ({form.imagenes?.length || 0})</label>
+              <label className={`px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition ${uploading ? 'bg-gray-100 text-gray-400' : 'bg-navy/10 text-navy hover:bg-navy/20'}`}>
+                {uploading ? 'Subiendo...' : 'Subir imagenes'}
+                <input type="file" multiple accept="image/*" onChange={uploadImages} className="hidden" disabled={uploading} />
+              </label>
+            </div>
+            {form.imagenes && form.imagenes.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {form.imagenes.map((url: string, idx: number) => (
+                  <div key={idx} draggable onDragStart={() => handleDragStart(idx)} onDragOver={e => handleDragOver(e, idx)} onDragEnd={handleDragEnd}
+                    className={`relative group rounded-lg border-2 overflow-hidden aspect-square bg-gray-50 cursor-grab active:cursor-grabbing transition
+                      ${idx === 0 ? 'border-solar' : 'border-gray-200'} ${dragIdx === idx ? 'opacity-50 scale-95' : ''}`}>
+                    <img src={url} alt="" className="w-full h-full object-cover" />
+                    {idx === 0 && (
+                      <span className="absolute top-1.5 left-1.5 bg-solar text-white text-[9px] font-bold px-1.5 py-0.5 rounded">PRINCIPAL</span>
+                    )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100">
+                      <button type="button" onClick={() => moveImage(idx, idx - 1)} disabled={idx === 0}
+                        className="w-7 h-7 rounded-full bg-white/90 text-gray-700 flex items-center justify-center text-xs disabled:opacity-30 hover:bg-white">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                      </button>
+                      <button type="button" onClick={() => removeImage(idx)}
+                        className="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                      </button>
+                      <button type="button" onClick={() => moveImage(idx, idx + 1)} disabled={idx === form.imagenes.length - 1}
+                        className="w-7 h-7 rounded-full bg-white/90 text-gray-700 flex items-center justify-center text-xs disabled:opacity-30 hover:bg-white">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
+                <svg className="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+                </svg>
+                <p className="text-xs text-gray-400">Arrastra imagenes o usa el boton &ldquo;Subir imagenes&rdquo;</p>
+                <p className="text-[10px] text-gray-300 mt-1">La primera imagen sera la principal</p>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-4 flex gap-2">
+            <button type="submit" className="bg-solar text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-solar-dark transition">{editing ? 'Actualizar producto' : 'Crear producto'}</button>
+            <button type="button" onClick={() => { setShowForm(false); setEditing(null); setForm(emptyForm); }}
+              className="px-5 py-2 rounded-md text-sm font-medium text-gray-500 hover:bg-gray-100 transition">Cancelar</button>
+          </div>
         </form>
       )}
 
@@ -354,6 +493,7 @@ function ProductosTab() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead><tr className="border-b border-gray-100 text-left text-[11px] text-gray-400 uppercase tracking-wide">
+              <th className="py-2.5 px-3 w-10"></th>
               <th className="py-2.5 px-3">Producto</th>
               <th className="py-2.5 px-3 hidden md:table-cell">Marca</th>
               <th className="py-2.5 px-3">Precio</th>
@@ -363,7 +503,19 @@ function ProductosTab() {
             <tbody>
               {items.map((p: any) => (
                 <tr key={p.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="py-2 px-3"><span className="font-medium text-navy">{p.nombre}</span></td>
+                  <td className="py-1.5 px-3">
+                    {(p.imagen_url || p.imagenes?.[0]) ? (
+                      <img src={p.imagenes?.[0] || p.imagen_url} alt="" className="w-9 h-9 rounded object-cover" />
+                    ) : (
+                      <div className="w-9 h-9 rounded bg-gray-100 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" /></svg>
+                      </div>
+                    )}
+                  </td>
+                  <td className="py-2 px-3">
+                    <span className="font-medium text-navy">{p.nombre}</span>
+                    {p.destacado && <span className="ml-1.5 text-[9px] font-bold text-solar bg-solar/10 px-1 py-0.5 rounded">DEST</span>}
+                  </td>
                   <td className="py-2 px-3 hidden md:table-cell text-gray-400">{p.marca || '-'}</td>
                   <td className="py-2 px-3 tabular-nums">{p.precio ? fmt(Number(p.precio)) : '-'}</td>
                   <td className="py-2 px-3">
@@ -518,18 +670,41 @@ function UsuariosTab({ currentUser }: { currentUser: User | null }) {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState({ nombre: '', email: '', password: '', rol: 'asesor' });
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
   const perPage = 25;
 
-  useEffect(() => { fetch('/api/usuarios').then(r => r.json()).then(d => { setItems(d); setTotal(d.length); }); }, []);
+  const loadUsers = useCallback(() => {
+    fetch('/api/usuarios').then(r => r.json()).then(d => { setItems(d); setTotal(d.length); });
+  }, []);
+  useEffect(() => { loadUsers(); }, [loadUsers]);
 
-  async function crear(e: React.FormEvent) {
+  async function guardar(e: React.FormEvent) {
     e.preventDefault();
-    const res = await fetch('/api/usuarios', { method: 'POST', headers: authHeaders(), body: JSON.stringify(form) });
-    if (res.ok) {
-      setShowForm(false); setForm({ nombre: '', email: '', password: '', rol: 'asesor' });
-      fetch('/api/usuarios').then(r => r.json()).then(d => { setItems(d); setTotal(d.length); });
+    setError('');
+    let res;
+    if (editing) {
+      const payload: any = { nombre: form.nombre, email: form.email, rol: form.rol };
+      if (form.password) payload.password = form.password;
+      res = await fetch(`/api/usuarios/${editing.id}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
+    } else {
+      if (!form.password) { setError('La contrasena es obligatoria para usuarios nuevos'); return; }
+      res = await fetch('/api/usuarios', { method: 'POST', headers: authHeaders(), body: JSON.stringify(form) });
     }
+    if (res.ok) {
+      setShowForm(false); setEditing(null); setForm({ nombre: '', email: '', password: '', rol: 'asesor' }); setShowPassword(false);
+      loadUsers();
+    } else {
+      const data = await res.json();
+      setError(data.error || 'Error al guardar');
+    }
+  }
+
+  function editarUser(u: any) {
+    setForm({ nombre: u.nombre, email: u.email, password: '', rol: u.rol });
+    setEditing(u); setShowForm(true); setShowPassword(false); setError('');
   }
 
   const isSuperadmin = currentUser?.rol === 'superadmin';
@@ -539,21 +714,64 @@ function UsuariosTab({ currentUser }: { currentUser: User | null }) {
     <div>
       {isSuperadmin && (
         <div className="flex justify-end mb-4">
-          <button onClick={() => setShowForm(!showForm)} className="bg-navy text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-navy-dark transition">
-            {showForm ? 'Cancelar' : 'Nuevo usuario'}
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); setForm({ nombre: '', email: '', password: '', rol: 'asesor' }); setShowPassword(false); setError(''); }}
+            className="bg-navy text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-navy-dark transition">
+            {showForm && !editing ? 'Cancelar' : 'Nuevo usuario'}
           </button>
         </div>
       )}
 
       {showForm && (
-        <form onSubmit={crear} className="bg-white rounded-lg border border-gray-100 p-4 mb-4 grid sm:grid-cols-2 gap-2.5">
-          <input required placeholder="Nombre" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-          <input required type="email" placeholder="Email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-          <input required type="password" placeholder="Contrasena" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-          <select value={form.rol} onChange={e => setForm({ ...form, rol: e.target.value })} className="border border-gray-200 rounded-md px-3 py-2 text-sm">
-            <option value="asesor">Asesor</option><option value="consulta">Consulta</option><option value="superadmin">Superadmin</option>
-          </select>
-          <button type="submit" className="bg-solar text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-solar-dark sm:col-span-2">Crear</button>
+        <form onSubmit={guardar} className="bg-white rounded-lg border border-gray-100 p-5 mb-4">
+          <h4 className="text-sm font-semibold text-navy mb-3">{editing ? `Editando: ${editing.nombre}` : 'Nuevo usuario'}</h4>
+          {error && <p className="text-xs text-red-500 mb-3 bg-red-50 px-3 py-2 rounded">{error}</p>}
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Nombre</label>
+              <input required value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" />
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Email</label>
+              <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none" />
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">
+                Contrasena {editing && <span className="normal-case text-gray-300">(dejar vacio para no cambiar)</span>}
+              </label>
+              <div className="relative">
+                <input type={showPassword ? 'text' : 'password'} value={form.password} required={!editing}
+                  onChange={e => setForm({ ...form, password: e.target.value })}
+                  className="w-full border border-gray-200 rounded-md px-3 py-2 pr-10 text-sm focus:border-navy outline-none" />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    {showPassword
+                      ? <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                      : <><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></>
+                    }
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-400 uppercase tracking-wide mb-1">Rol</label>
+              <select value={form.rol} onChange={e => setForm({ ...form, rol: e.target.value })}
+                className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:border-navy outline-none">
+                <option value="asesor">Asesor</option>
+                <option value="consulta">Consulta</option>
+                <option value="superadmin">Superadmin</option>
+              </select>
+            </div>
+          </div>
+          <div className="mt-4 flex gap-2">
+            <button type="submit" className="bg-solar text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-solar-dark transition">
+              {editing ? 'Actualizar' : 'Crear'}
+            </button>
+            <button type="button" onClick={() => { setShowForm(false); setEditing(null); setError(''); }}
+              className="px-5 py-2 rounded-md text-sm font-medium text-gray-500 hover:bg-gray-100 transition">Cancelar</button>
+          </div>
         </form>
       )}
 
@@ -565,6 +783,7 @@ function UsuariosTab({ currentUser }: { currentUser: User | null }) {
               <th className="py-2.5 px-3">Email</th>
               <th className="py-2.5 px-3">Rol</th>
               <th className="py-2.5 px-3 hidden md:table-cell">Creado</th>
+              {isSuperadmin && <th className="py-2.5 px-3 w-20">Acciones</th>}
             </tr></thead>
             <tbody>
               {paginated.map((u: any) => (
@@ -575,6 +794,15 @@ function UsuariosTab({ currentUser }: { currentUser: User | null }) {
                     <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${u.rol === 'superadmin' ? 'bg-navy text-white' : u.rol === 'asesor' ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-500'}`}>{u.rol}</span>
                   </td>
                   <td className="py-2 px-3 hidden md:table-cell text-gray-400 text-xs">{new Date(u.created_at).toLocaleDateString('es-CO')}</td>
+                  {isSuperadmin && (
+                    <td className="py-2 px-3">
+                      {u.rol !== 'superadmin' ? (
+                        <button onClick={() => editarUser(u)} className="text-navy hover:underline text-xs font-medium">Editar</button>
+                      ) : (
+                        <span className="text-[10px] text-gray-300">-</span>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
