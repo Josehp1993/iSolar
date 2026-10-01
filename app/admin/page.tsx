@@ -307,7 +307,14 @@ function ProductosTab() {
   async function guardar(e: React.FormEvent) {
     e.preventDefault();
     const slug = form.nombre.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-    const payload = { ...form, slug, imagen_url: form.imagenes?.[0] || form.imagen_url || '' };
+    const payload = {
+      ...form,
+      slug,
+      precio: form.precio !== '' ? Number(form.precio) : 0,
+      precio_oferta: form.precio_oferta !== '' ? Number(form.precio_oferta) : null,
+      stock: form.stock !== '' ? Number(form.stock) : 0,
+      imagen_url: form.imagenes?.[0] || form.imagen_url || '',
+    };
     if (editing) {
       await fetch(`/api/productos/${editing.id}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
     } else {
@@ -318,8 +325,8 @@ function ProductosTab() {
 
   function editar(p: any) {
     setForm({
-      nombre: p.nombre || '', categoria_id: p.categoria_id || '', precio: p.precio || '', precio_oferta: p.precio_oferta || '',
-      stock: p.stock || '', referencia: p.referencia || '', descripcion: p.descripcion || '', marca: p.marca || '',
+      nombre: p.nombre || '', categoria_id: p.categoria_id || '', precio: p.precio ?? '', precio_oferta: p.precio_oferta ?? '',
+      stock: p.stock ?? '', referencia: p.referencia || '', descripcion: p.descripcion || '', marca: p.marca || '',
       destacado: p.destacado || false, imagen_url: p.imagen_url || '',
       imagenes: Array.isArray(p.imagenes) ? [...p.imagenes] : (p.imagen_url ? [p.imagen_url] : [])
     });
