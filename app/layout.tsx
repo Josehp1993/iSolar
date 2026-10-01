@@ -11,6 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es">
       <body className="bg-white text-gray-900 antialiased">
         {children}
+        <script src="https://checkout.wompi.co/widget.js" async />
       </body>
     </html>
   );

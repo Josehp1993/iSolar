@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-type Tab = 'dashboard' | 'negociaciones' | 'productos' | 'clientes' | 'usuarios';
+type Tab = 'dashboard' | 'negociaciones' | 'productos' | 'clientes' | 'pedidos' | 'usuarios';
 
 interface User { id: number; nombre: string; email: string; rol: string }
 
@@ -399,6 +399,48 @@ function ClientesTab() {
   );
 }
 
+// ─── Pedidos Tab ───
+function PedidosTab() {
+  const [items, setItems] = useState<any[]>([]);
+  useEffect(() => { fetch('/api/pedidos').then(r => r.json()).then(setItems); }, []);
+
+  const estadoColor: Record<string, string> = {
+    pendiente: 'bg-yellow-100 text-yellow-800', aprobado: 'bg-green-100 text-green-800',
+    rechazado: 'bg-red-100 text-red-800', enviado: 'bg-blue-100 text-blue-800',
+    entregado: 'bg-emerald-100 text-emerald-800', cancelado: 'bg-gray-100 text-gray-600',
+  };
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b text-left text-gray-500">
+            <th className="py-2 pr-3">Referencia</th>
+            <th className="py-2 pr-3 hidden md:table-cell">Cliente</th>
+            <th className="py-2 pr-3">Total</th>
+            <th className="py-2 pr-3">Estado</th>
+            <th className="py-2 hidden md:table-cell">Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((p: any) => (
+            <tr key={p.id} className="border-b hover:bg-gray-50">
+              <td className="py-2.5 pr-3 font-mono text-xs">{p.referencia}</td>
+              <td className="py-2.5 pr-3 hidden md:table-cell">{p.cliente_nombre || '-'}</td>
+              <td className="py-2.5 pr-3 font-semibold">{fmt(Number(p.total))}</td>
+              <td className="py-2.5 pr-3">
+                <span className={`px-2 py-0.5 rounded text-xs font-semibold ${estadoColor[p.estado] || ''}`}>{p.estado}</span>
+              </td>
+              <td className="py-2.5 hidden md:table-cell text-gray-400 text-xs">{new Date(p.created_at).toLocaleDateString('es-CO')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {items.length === 0 && <p className="text-center text-gray-400 py-8">No hay pedidos</p>}
+    </div>
+  );
+}
+
 // ─── Usuarios Tab ───
 function UsuariosTab({ currentUser }: { currentUser: User | null }) {
   const [items, setItems] = useState<any[]>([]);
@@ -499,6 +541,7 @@ export default function AdminPage() {
     { key: 'negociaciones', label: 'Negociaciones' },
     { key: 'productos', label: 'Productos' },
     { key: 'clientes', label: 'Clientes' },
+    { key: 'pedidos', label: 'Pedidos' },
     { key: 'usuarios', label: 'Usuarios' },
   ];
 
@@ -529,6 +572,7 @@ export default function AdminPage() {
         {tab === 'negociaciones' && <NegociacionesTab />}
         {tab === 'productos' && <ProductosTab />}
         {tab === 'clientes' && <ClientesTab />}
+        {tab === 'pedidos' && <PedidosTab />}
         {tab === 'usuarios' && <UsuariosTab currentUser={user} />}
       </main>
     </div>
