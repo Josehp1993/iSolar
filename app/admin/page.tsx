@@ -285,13 +285,13 @@ function ProductosTab() {
   const [search, setSearch] = useState('');
   const [editing, setEditing] = useState<any>(null);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<any>({ nombre: '', categoria_id: '', precio: '', precio_oferta: '', stock: '', referencia: '', descripcion: '', marca: '', destacado: false, imagen_url: '', imagenes: [] as string[] });
+  const [form, setForm] = useState<any>({ nombre: '', categoria_id: '', precio: '', precio_oferta: '', stock: '', referencia: '', descripcion: '', marca: '', destacado: false, imagen_url: '', imagenes: [] as string[], specs: {}, features: [] as string[], activo: true });
   const [categorias, setCategorias] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
   const perPage = 25;
 
-  const emptyForm = { nombre: '', categoria_id: '', precio: '', precio_oferta: '', stock: '', referencia: '', descripcion: '', marca: '', destacado: false, imagen_url: '', imagenes: [] as string[] };
+  const emptyForm = { nombre: '', categoria_id: '', precio: '', precio_oferta: '', stock: '', referencia: '', descripcion: '', marca: '', destacado: false, imagen_url: '', imagenes: [] as string[], specs: {}, features: [] as string[], activo: true };
 
   const load = useCallback(() => {
     let url = `/api/productos?limit=${perPage}&offset=${(page - 1) * perPage}`;
@@ -314,6 +314,8 @@ function ProductosTab() {
       precio_oferta: form.precio_oferta !== '' ? Number(form.precio_oferta) : null,
       stock: form.stock !== '' ? Number(form.stock) : 0,
       imagen_url: form.imagenes?.[0] || form.imagen_url || '',
+      specs: form.specs || {},
+      features: form.features || [],
     };
     if (editing) {
       await fetch(`/api/productos/${editing.id}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
@@ -325,10 +327,13 @@ function ProductosTab() {
 
   function editar(p: any) {
     setForm({
-      nombre: p.nombre || '', categoria_id: p.categoria_id || '', precio: p.precio ?? '', precio_oferta: p.precio_oferta ?? '',
+      nombre: p.nombre || '', categoria_id: p.categoria_id ?? '', precio: p.precio ?? '', precio_oferta: p.precio_oferta ?? '',
       stock: p.stock ?? '', referencia: p.referencia || '', descripcion: p.descripcion || '', marca: p.marca || '',
       destacado: p.destacado || false, imagen_url: p.imagen_url || '',
-      imagenes: Array.isArray(p.imagenes) ? [...p.imagenes] : (p.imagen_url ? [p.imagen_url] : [])
+      imagenes: Array.isArray(p.imagenes) ? [...p.imagenes] : (p.imagen_url ? [p.imagen_url] : []),
+      specs: typeof p.specs === 'string' ? JSON.parse(p.specs) : (p.specs || {}),
+      features: p.features || [],
+      activo: p.activo ?? true,
     });
     setEditing(p); setShowForm(true);
   }
