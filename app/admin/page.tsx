@@ -347,12 +347,12 @@ function ProductosTab() {
     load();
   }
 
-  async function uploadImages(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
+  async function uploadFiles(fileList: FileList | File[]) {
+    const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+    if (files.length === 0) return;
     setUploading(true);
     const fd = new FormData();
-    for (let i = 0; i < files.length; i++) fd.append('files', files[i]);
+    files.forEach(f => fd.append('files', f));
     try {
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
       const data = await res.json();
@@ -365,7 +365,6 @@ function ProductosTab() {
       alert('Error al subir imagenes');
     }
     setUploading(false);
-    e.target.value = '';
   }
 
   function removeImage(idx: number) {
@@ -461,7 +460,7 @@ function ProductosTab() {
               <label className="text-[11px] text-gray-400 uppercase tracking-wide font-medium">Imagenes ({form.imagenes?.length || 0})</label>
               <label className={`px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition ${uploading ? 'bg-gray-100 text-gray-400' : 'bg-navy/10 text-navy hover:bg-navy/20'}`}>
                 {uploading ? 'Subiendo...' : 'Subir imagenes'}
-                <input type="file" multiple accept="image/*" onChange={uploadImages} className="hidden" disabled={uploading} />
+                <input type="file" multiple accept="image/*" onChange={e => { if (e.target.files) { uploadFiles(e.target.files); e.target.value = ''; } }} className="hidden" disabled={uploading} />
               </label>
             </div>
             {form.imagenes && form.imagenes.length > 0 ? (
@@ -492,11 +491,14 @@ function ProductosTab() {
                 ))}
               </div>
             ) : (
-              <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
+              <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center hover:border-navy/40 transition"
+                onDragOver={e => { e.preventDefault(); e.currentTarget.classList.add('border-navy', 'bg-navy/5'); }}
+                onDragLeave={e => { e.currentTarget.classList.remove('border-navy', 'bg-navy/5'); }}
+                onDrop={e => { e.preventDefault(); e.currentTarget.classList.remove('border-navy', 'bg-navy/5'); if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files); }}>
                 <svg className="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
                 </svg>
-                <p className="text-xs text-gray-400">Arrastra imagenes o usa el boton &ldquo;Subir imagenes&rdquo;</p>
+                <p className="text-xs text-gray-400">Arrastra imagenes aqui o usa el boton &ldquo;Subir imagenes&rdquo;</p>
                 <p className="text-[10px] text-gray-300 mt-1">La primera imagen sera la principal</p>
               </div>
             )}
