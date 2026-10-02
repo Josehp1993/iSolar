@@ -317,10 +317,13 @@ function ProductosTab() {
       specs: form.specs || {},
       features: form.features || [],
     };
-    if (editing) {
-      await fetch(`/api/productos/${editing.id}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
-    } else {
-      await fetch('/api/productos', { method: 'POST', headers: authHeaders(), body: JSON.stringify(payload) });
+    const url = editing ? `/api/productos/${editing.id}` : '/api/productos';
+    const method = editing ? 'PUT' : 'POST';
+    const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(payload) });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      alert('Error guardando producto: ' + (err.error || res.statusText));
+      return;
     }
     setShowForm(false); setEditing(null); setForm(emptyForm); load();
   }
@@ -353,8 +356,14 @@ function ProductosTab() {
     try {
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
       const data = await res.json();
-      if (data.urls) setForm((prev: any) => ({ ...prev, imagenes: [...(prev.imagenes || []), ...data.urls] }));
-    } catch { }
+      if (data.urls && data.urls.length > 0) {
+        setForm((prev: any) => ({ ...prev, imagenes: [...(prev.imagenes || []), ...data.urls] }));
+      } else {
+        alert('Error al subir imagenes: ' + (data.error || 'respuesta vacia'));
+      }
+    } catch (err) {
+      alert('Error al subir imagenes');
+    }
     setUploading(false);
     e.target.value = '';
   }
