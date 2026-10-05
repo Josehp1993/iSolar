@@ -53,20 +53,21 @@ export default function CarritoPage() {
 
       if (!pedidoRes.ok) throw new Error('Error creando pedido');
 
-      const pubKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY;
-      if (pubKey) {
-        const hashRes = await fetch('/api/wompi/integrity', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ reference: referencia, amountInCents, currency: 'COP' }),
-        });
-        const { hash } = await hashRes.json();
+      const hashRes = await fetch('/api/wompi/checkout-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference: referencia, amountInCents, currency: 'COP' }),
+      });
 
+      if (!hashRes.ok) throw new Error('Error obteniendo configuracion de pago');
+      const { publicKey, hash } = await hashRes.json();
+
+      if (publicKey && (window as any).WidgetCheckout) {
         const widgetCheckout = new (window as any).WidgetCheckout({
           currency: 'COP',
           amountInCents,
           reference: referencia,
-          publicKey: pubKey,
+          publicKey,
           integritySignature: hash,
           customerData: {
             email: form.email,
