@@ -23,7 +23,7 @@ export default function ProductoPage() {
     addItem({
       id: producto.id,
       nombre: producto.nombre,
-      precio: Number(producto.precio),
+      precio: producto.precio_oferta != null && Number(producto.precio_oferta) > 0 && Number(producto.precio_oferta) < Number(producto.precio) ? Number(producto.precio_oferta) : Number(producto.precio),
       stock: producto.stock,
       imagen_url: producto.imagen_url,
       marca: producto.marca,
@@ -68,7 +68,16 @@ export default function ProductoPage() {
           <h1 className="text-2xl font-montserrat font-bold text-navy mb-4">{producto.nombre}</h1>
 
           {producto.precio > 0 && (
-            <p className="text-3xl font-bold text-solar mb-6">{fmt(Number(producto.precio))}</p>
+            <div className="mb-6">
+              {producto.precio_oferta != null && Number(producto.precio_oferta) > 0 && Number(producto.precio_oferta) < Number(producto.precio) ? (
+                <>
+                  <p className="text-lg text-gray-400 line-through">{fmt(Number(producto.precio))}</p>
+                  <p className="text-3xl font-bold text-red-600">{fmt(Number(producto.precio_oferta))}</p>
+                </>
+              ) : (
+                <p className="text-3xl font-bold text-solar">{fmt(Number(producto.precio))}</p>
+              )}
+            </div>
           )}
 
           {Object.keys(specs).length > 0 && (

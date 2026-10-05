@@ -100,7 +100,8 @@ export default function HomePage() {
 
   function handleAddToCart(p: Producto) {
     if (Number(p.precio) <= 0 || Number(p.stock) <= 0) return;
-    cart.addItem({ id: p.id, nombre: p.nombre, precio: Number(p.precio), stock: Number(p.stock), imagen_url: p.imagen_url, marca: p.marca });
+    const precioFinal = p.precio_oferta != null && Number(p.precio_oferta) > 0 && Number(p.precio_oferta) < Number(p.precio) ? Number(p.precio_oferta) : Number(p.precio);
+    cart.addItem({ id: p.id, nombre: p.nombre, precio: precioFinal, stock: Number(p.stock), imagen_url: p.imagen_url, marca: p.marca });
     setToast(`${p.nombre} agregado al carrito`);
   }
 
@@ -226,7 +227,16 @@ export default function HomePage() {
                       </div>
                     )}
                     {Number(p.precio) > 0 && (
-                      <p className="text-[16px] font-bold text-solar mb-3">{formatPrice(Number(p.precio))}</p>
+                      <div className="mb-3">
+                        {p.precio_oferta != null && Number(p.precio_oferta) > 0 && Number(p.precio_oferta) < Number(p.precio) ? (
+                          <>
+                            <p className="text-[13px] text-gray-400 line-through">{formatPrice(Number(p.precio))}</p>
+                            <p className="text-[16px] font-bold text-red-600">{formatPrice(Number(p.precio_oferta))}</p>
+                          </>
+                        ) : (
+                          <p className="text-[16px] font-bold text-solar">{formatPrice(Number(p.precio))}</p>
+                        )}
+                      </div>
                     )}
                     <div className="flex gap-2">
                       <button onClick={e => { e.stopPropagation(); window.open(`https://wa.me/573001234567?text=${encodeURIComponent('Hola, me interesa cotizar: ' + p.nombre)}`, '_blank'); }}
@@ -375,7 +385,16 @@ export default function HomePage() {
               <h2 className="text-[20px] font-bold text-navy mb-1">{modal.nombre}</h2>
               <p className="text-[13px] text-gray-400">{modal.categoria_nombre}</p>
               {modal.precio > 0 && (
-                <p className="text-[22px] font-bold text-solar mt-2">{formatPrice(Number(modal.precio))}</p>
+                <div className="mt-2">
+                  {modal.precio_oferta != null && Number(modal.precio_oferta) > 0 && Number(modal.precio_oferta) < Number(modal.precio) ? (
+                    <>
+                      <p className="text-[15px] text-gray-400 line-through">{formatPrice(Number(modal.precio))}</p>
+                      <p className="text-[22px] font-bold text-red-600">{formatPrice(Number(modal.precio_oferta))}</p>
+                    </>
+                  ) : (
+                    <p className="text-[22px] font-bold text-solar">{formatPrice(Number(modal.precio))}</p>
+                  )}
+                </div>
               )}
             </div>
             <div className="px-6 py-6">
