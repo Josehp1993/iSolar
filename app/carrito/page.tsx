@@ -159,6 +159,10 @@ export default function CarritoPage() {
                   className="w-full border rounded-lg px-3 py-2 text-sm" />
                 <input required placeholder="Direccion de envio" value={form.direccion} onChange={e => setForm({ ...form, direccion: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2 text-sm" />
+                <label className="flex items-start gap-2 text-xs text-gray-600">
+                  <input type="checkbox" required className="mt-0.5" />
+                  <span>Autorizo el tratamiento de mis datos personales de acuerdo con la <a href="/politica-privacidad" target="_blank" className="text-navy underline">Politica de Privacidad</a> (Ley 1581 de 2012)</span>
+                </label>
                 <button type="submit" disabled={loading}
                   className="w-full bg-solar text-white py-2.5 rounded-lg font-semibold hover:bg-solar-dark disabled:opacity-50 transition">
                   {loading ? 'Procesando...' : 'Pagar con Wompi'}

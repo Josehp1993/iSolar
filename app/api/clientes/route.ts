@@ -27,7 +27,12 @@ export async function POST(req: NextRequest) {
   try {
     const { nombre, email, telefono, cedula, ciudad, direccion, notas } = await req.json();
     const result = await query(
-      `INSERT INTO clientes (nombre, email, telefono, cedula, ciudad, direccion, notas) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+      `INSERT INTO clientes (nombre, email, telefono, cedula, ciudad, direccion, notas)
+       VALUES ($1,$2,$3,$4,$5,$6,$7)
+       ON CONFLICT (cedula) DO UPDATE SET
+         nombre = EXCLUDED.nombre, email = EXCLUDED.email, telefono = EXCLUDED.telefono,
+         ciudad = EXCLUDED.ciudad, direccion = EXCLUDED.direccion, updated_at = CURRENT_TIMESTAMP
+       RETURNING *`,
       [nombre, email, telefono, cedula, ciudad, direccion, notas]
     );
     return NextResponse.json(result.rows[0], { status: 201 });
